@@ -41,8 +41,8 @@
         </div>
         <p class="small mb-3 text-center">日付と担当者を入力してください</p>
         <input type="date" id="targetDate" class="form-control mb-3 text-center">
-        <input type="text" id="userName" class="form-control form-control-lg mb-4 text-center" placeholder="NAME" onkeydown="handleEnter(event)">
-        <button type="button" class="btn btn-batur" onclick="enterApp()">入室</button>
+        <input type="text" id="userName" class="form-control form-control-lg mb-4 text-center" placeholder="NAME">
+        <button type="button" class="btn btn-batur" id="enterBtn">入室</button>
       </div>
     </div>
 
@@ -89,7 +89,7 @@
         <div class="check-item"><input type="checkbox" id="c7"><span>引き継ぎに漏れ等はありませんか（清掃忘れ等）</span></div>
       </div>
 
-      <div class="fixed-bottom-btn"><button class="btn btn-batur w-100" onclick="finalSubmit()" id="submitBtn">報告を送信</button></div>
+      <div class="fixed-bottom-btn"><button class="btn btn-batur w-100" id="submitBtn">報告を送信</button></div>
     </div>
 
     <!-- ページ3: サンクスページ -->
@@ -109,70 +109,72 @@
 
       window.onload = function() {
         const dateInput = document.getElementById('targetDate');
-        dateInput.valueAsDate = new Date();
+        if(dateInput) dateInput.valueAsDate = new Date();
         const usageGrid = document.getElementById('usage-grid');
-        venues.forEach(v => { usageGrid.innerHTML += `<div><input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="updateResetList()"><label class="usage-label" for="u_${v}">${v}</label></div>`; });
+        if(usageGrid) {
+            venues.forEach(v => { usageGrid.innerHTML += `<div><input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="updateResetList()"><label class="usage-label" for="u_${v}">${v}</label></div>`; });
+        }
         updateResetList();
+        
+        // スマホでボタンのクリックを確実に拾うための設定
+        document.getElementById('enterBtn').addEventListener('click', enterApp);
+        document.getElementById('submitBtn').addEventListener('click', finalSubmit);
       };
 
       function updateChecklistByDate(dateString) {
         const day = new Date(dateString).getDay(); 
-        document.getElementById('cloth-remind').style.display = [0, 2, 3, 5].includes(day) ? 'flex' : 'none';
+        const remind = document.getElementById('cloth-remind');
+        if(remind) remind.style.display = [0, 2, 3, 5].includes(day) ? 'flex' : 'none';
       }
 
-      function handleEnter(e) { if (e.key === 'Enter') enterApp(); }
-
       function enterApp() {
-        const name = document.getElementById('userName').value.trim();
-        const dateVal = document.getElementById('targetDate').value;
+        const nameInput = document.getElementById('userName');
+        const dateInput = document.getElementById('targetDate');
+        if(!nameInput || !dateInput) return;
+
+        const name = nameInput.value.trim();
+        const dateVal = dateInput.value;
+
         if (!name || !dateVal) { alert("日付と名前を入力してください"); return; }
         updateChecklistByDate(dateVal);
         document.getElementById('welcome-page').style.display = 'none';
         document.getElementById('main-page').style.display = 'block';
-        document.getElementById('user-display').innerText = "DATE: " + dateVal + " / STAFF: " + name;
+        const userDisplay = document.getElementById('user-display');
+        if(userDisplay) userDisplay.innerText = "DATE: " + dateVal + " / STAFF: " + name;
+        updateResetList();
       }
 
       function updateResetList() {
-    const resetSection = document.getElementById('reset-section');
-    const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
-    let items = [...baseResetItems];
-    selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
-    
-    // 現在の入力値を保持
-    const currentVals = {}; 
-    document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
-    
-    resetSection.innerHTML = "";
-    items.forEach(name => {
-        const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
-        const labels = resetConfig[key];
+        const resetSection = document.getElementById('reset-section');
+        if(!resetSection) return;
+        const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
+        let items = [...baseResetItems];
+        selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
         
-        resetSection.innerHTML += `
-            <div class="card">
-                <span class="fw-bold">
-                    ● ${name} 
-                    <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span>
-                </span>
-                <div class="slider-container py-3">
-                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;">
-                        <span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span>
+        const currentVals = {}; 
+        document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
+        
+        resetSection.innerHTML = "";
+        items.forEach(name => {
+            const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
+            const labels = resetConfig[key];
+            resetSection.innerHTML += `
+                <div class="card">
+                    <span class="fw-bold">● ${name} <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span></span>
+                    <div class="slider-container py-3">
+                        <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;"><span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span></div>
+                        <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
                     </div>
-                    <input type="range" class="form-range" min="0" max="4" step="1" 
-                           value="${currentVals['slide_'+name] || 0}" 
-                           id="slide_${name}" 
-                           oninput="checkStatus('${name}')">
-                </div>
-                <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
-            </div>`;
-        
-        // 描画直後に状態をチェックして、4ならExcellentを表示させる
-        setTimeout(() => checkStatus(name), 0);
-    });
-}
+                    <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
+                </div>`;
+            setTimeout(() => checkStatus(name), 0);
+        });
+      }
 
       async function finalSubmit() {
         const checks = document.querySelectorAll('#checklist-area input[type="checkbox"]');
-        let allChecked = true; checks.forEach(c => { if(c.offsetParent !== null && !c.checked) allChecked = false; });
+        let allChecked = true; 
+        checks.forEach(c => { if(c.offsetParent !== null && !c.checked) allChecked = false; });
         if(!allChecked) { alert("チェックリストをすべて確認してください"); return; }
 
         const btn = document.getElementById('submitBtn');
@@ -180,51 +182,39 @@
         btn.innerText = "SENDING...";
 
         const payload = { 
-          targetDate: document.getElementById('targetDate').value, 
-          userName: document.getElementById('userName').value, 
-          usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"), 
-          resetData: {}, 
-          pickupInfo: document.getElementById('pickupInfo').value, 
-          otherNote: document.getElementById('otherNote').value 
+            targetDate: document.getElementById('targetDate').value, 
+            userName: document.getElementById('userName').value, 
+            usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"), 
+            resetData: {}, 
+            pickupInfo: document.getElementById('pickupInfo').value, 
+            otherNote: document.getElementById('otherNote').value 
         };
 
         document.querySelectorAll('#reset-section .card').forEach(card => {
-          const nameSpan = card.querySelector('.fw-bold');
-          if(!nameSpan) return;
-          const name = nameSpan.innerText.split('● ')[1].split(' Excellent!')[0].trim();
-          const val = card.querySelector('input[type="range"]').value;
-          const comm = card.querySelector('textarea').value;
-          payload.resetData[name] = { 
-            status: val == 4 ? "完了" : (val == 0 ? "未着" : "リセット途中"), 
-            comment: comm 
-          };
+            const nameSpan = card.querySelector('.fw-bold');
+            if(!nameSpan) return;
+            const name = nameSpan.innerText.split('● ')[1].split(' Excellent!')[0].trim();
+            const val = card.querySelector('input[type="range"]').value;
+            payload.resetData[name] = { status: val == 4 ? "完了" : (val == 0 ? "未着" : "リセット途中"), comment: card.querySelector('textarea').value };
         });
 
         try {
-          await fetch(GAS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "text/plain" },
-            body: JSON.stringify(payload)
-          });
-          
-          document.getElementById('main-page').style.display = 'none';
-          document.getElementById('ending-page').style.display = 'flex';
+            await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('ending-page').style.display = 'flex';
         } catch (e) {
-          alert("送信エラー: " + e.message);
-          btn.disabled = false;
-          btn.innerText = "報告を送信";
+            alert("送信エラー: " + e.message);
+            btn.disabled = false; btn.innerText = "報告を送信";
         }
       }
-      
-      // スライダーの状態を見て「Excellent!」を出す関数
-function checkStatus(name) {
-    const slide = document.getElementById(`slide_${name}`);
-    const praise = document.getElementById(`praise_${name}`);
-    if (praise && slide) {
-        // スライダーが最大（4）のときだけ表示
-        praise.style.display = (slide.value == 4) ? "inline" : "none";
-    }
+
+      function checkStatus(name) {
+        const slide = document.getElementById(`slide_${name}`);
+        const praise = document.getElementById(`praise_${name}`);
+        if (praise && slide) {
+            praise.style.display = (slide.value == 4) ? "inline" : "none";
+        }
+      }
     </script>
   </body>
 </html>
