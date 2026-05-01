@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+      :root { --batur-gold: #c5a36b; --batur-dark: #4a3d33; --batur-bg: #f4f1ed; }
+      body { background-color: var(--batur-bg); font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; color: var(--batur-dark); margin: 0; }
+      .page { display: none; min-height: 100vh; width: 100%; }
+      #welcome-page { display: flex; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #6d5b4b 0%, #4a3d33 100%); }
+      #main-page { display: none; padding-bottom: 120px; }
+      #ending-page { display: none; flex-direction: column; align-items: center; justify-content: center; background: linear-gradient(135deg, #6d5b4b 0%, #4a3d33 100%); }
+      .batur-card { background: rgba(255, 255, 255, 0.98); padding: 40px 25px; border-radius: 2px; box-shadow: 0 20px 50px rgba(0,0,0,0.3); width: 100%; max-width: 400px; border: 1px solid var(--batur-gold); position: relative; }
+      .batur-card::before { content: ""; position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border: 1px solid var(--batur-gold); pointer-events: none; }
+      .title-group { text-align: center; margin-bottom: 30px; }
+      .batur-logo-text { font-family: "Times New Roman", serif; font-size: 2.2rem; letter-spacing: 8px; margin-bottom: 0; font-weight: normal; }
+      .batur-sub { font-family: "Times New Roman", serif; color: var(--batur-gold); font-size: 0.8rem; letter-spacing: 5px; margin-top: -5px; }
+      .batur-form-title { font-size: 0.875rem; margin-top: 10px; color: var(--batur-dark); }
+      .app-header { background: var(--batur-dark); color: var(--batur-gold); padding: 20px 15px; border-bottom: 3px solid var(--batur-gold); text-align: center; }
+      .section-title { font-size: 0.9rem; font-weight: bold; margin: 25px 15px 10px; border-bottom: 1px solid var(--batur-gold); display: inline-block; padding-right: 20px; }
+      .card { background: white; border-radius: 0; border: none; box-shadow: 0 2px 10px rgba(0,0,0,0.05); margin: 0 10px 15px; padding: 20px; border-left: 4px solid var(--batur-gold); }
+      .btn-batur { background-color: var(--batur-dark); color: var(--batur-gold); border: 1px solid var(--batur-gold); border-radius: 0; padding: 15px; font-weight: bold; width: 100%; letter-spacing: 2px; }
+      .usage-label { display: flex; align-items: center; justify-content: center; background: white; border: 1px solid #ddd; padding: 12px 5px; font-size: 0.85rem; height: 50px; cursor: pointer; }
+      .usage-btn:checked + .usage-label { background: var(--batur-dark); color: var(--batur-gold); }
+      .check-item { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 0.9rem; text-align: left; }
+      .check-item input { margin-right: 12px; margin-top: 4px; transform: scale(1.2); accent-color: var(--batur-dark); }
+      .special-remind { color: #d63384; font-weight: bold; border: 1px dashed #d63384; padding: 8px; background: #fff0f5; }
+      .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px; background: rgba(255,255,255,0.95); z-index: 1000; border-top: 1px solid var(--batur-gold); }
+    </style>
+  </head>
+  <body>
+
+    <!-- ページ1: ウェルカム -->
+    <div id="welcome-page" class="page" style="display: flex;">
+      <div class="batur-card">
+        <div class="title-group">
+          <div class="batur-logo-text">BATUR</div>
+          <div class="batur-sub">TOKYO</div>
+          <div class="batur-form-title">引き継ぎフォーム</div>
+        </div>
+        <p class="small mb-3 text-center">日付と担当者を入力してください</p>
+        <input type="date" id="targetDate" class="form-control mb-3 text-center">
+        <input type="text" id="userName" class="form-control form-control-lg mb-4 text-center" placeholder="NAME" onkeydown="handleEnter(event)">
+        <button type="button" class="btn btn-batur" onclick="enterApp()">入室</button>
+      </div>
+    </div>
+
+    <!-- ページ2: 報告書本体 -->
+    <div id="main-page" class="page">
+      <div class="app-header">
+        <div class="batur-logo-text" style="font-size: 1.5rem; letter-spacing: 5px;">BATUR</div>
+        <div class="batur-sub" style="font-size: 0.6rem; letter-spacing: 3px;">TOKYO</div>
+        <div class="batur-form-title" style="color: var(--batur-gold); margin-top: 5px;">引き継ぎフォーム</div>
+        <div id="user-display" style="font-size: 0.7rem; margin-top: 10px; letter-spacing: 1px; color: white; opacity: 0.8;"></div>
+      </div>
+      
+      <div class="text-center mt-2" style="font-size:0.65rem; color:#999;" id="syncStatus">SYSTEM READY</div>
+
+      <div class="section-title">使用した会場 / VENUE</div>
+      <div class="grid-usage d-grid px-2" style="grid-template-columns: 1fr 1fr; gap: 10px;" id="usage-grid"></div>
+
+      <div class="section-title">リセット状況 / RESET STATUS</div>
+      <div id="reset-section"></div>
+
+      <div class="section-title">集荷・写真 / PICKUP & PHOTO</div>
+      <div class="card">
+        <textarea id="pickupInfo" class="form-control mb-3" rows="2" placeholder="集荷詳細"></textarea>
+        <input type="file" id="photoFile" class="form-control" accept="image/*">
+      </div>
+
+      <div class="section-title">その他 / OTHERS</div>
+      <div class="card">
+        <textarea id="otherNote" class="form-control" rows="3" placeholder="特記事項"></textarea>
+      </div>
+
+      <div class="section-title">締めチェック / CLOSING CHECKLIST</div>
+      <div class="card" id="checklist-area">
+        <div id="cloth-remind" style="display:none;" class="check-item special-remind">
+          <input type="checkbox" id="c3"><span>今日はクロスを出す日です！だしましたか？</span>
+        </div>
+        <div class="check-item"><input type="checkbox" id="c_elec"><span>各会場の電気、ガスOFF</span></div>
+        <div class="check-item"><input type="checkbox" id="c_kitchen"><span>キッチンスペースにホールの備品が散らかってないか</span></div>
+        <div class="check-item"><input type="checkbox" id="c1"><span>ゴミ出し、袋設置</span></div>
+        <div class="check-item"><input type="checkbox" id="c2"><span>（大皿利用時）白手</span></div>
+        <div class="check-item"><input type="checkbox" id="c4"><span>日付シールはすべて貼れていますか</span></div>
+        <div class="check-item"><input type="checkbox" id="c5"><span>コーヒーマシンの清掃</span></div>
+        <div class="check-item"><input type="checkbox" id="c6"><span>飲み残し、食べ残しはありませんか</span></div>
+        <div class="check-item"><input type="checkbox" id="c7"><span>引き継ぎに漏れ等はありませんか（清掃忘れ等）</span></div>
+      </div>
+
+      <div class="fixed-bottom-btn"><button class="btn btn-batur w-100" onclick="finalSubmit()" id="submitBtn">報告を送信</button></div>
+    </div>
+
+    <!-- ページ3: サンクスページ -->
+    <div id="ending-page" class="page">
+      <div class="batur-card">
+        <div class="batur-logo-text" style="font-size:1.5rem; letter-spacing:3px; margin-bottom:10px;">THANK YOU</div>
+        <p class="mb-4 text-center">引き継ぎ報告ありがとうございます！<br>お疲れ様でした！</p>
+        <button class="btn btn-batur w-100" onclick="location.reload()">新しい報告を作成</button>
+      </div>
+    </div>
+
+    <script>
+      const GAS_URL = "https://script.google.com/macros/s/AKfycbwtDjSvwmxwt6c63BFdCGrUzys4qYvwH_DAE_GFgZTu13VwtPADmlpnbUXxG58Y7XxD/exec";
+      const venues = ["メイン", "ヴィラ", "ヴィラエントランス", "メインエントランス", "チャペル", "控室①", "控室②", "控室③", "サロン"];
+      const baseResetItems = ["1Fトイレ", "喫煙所"];
+      const resetConfig = { "1Fトイレ": ["未着", "ごみ捨て", "完了"], "喫煙所": ["未着", "灰皿交換", "完了"], "メイン": ["未着", "フラット", "完了"], "ヴィラ": ["未着", "フラット", "完了"], "チャペル": ["未着", "フラット", "完了"], "控室": ["未着", "ごみ捨て", "完了"], "default": ["未着", "作業中", "完了"] };
+
+      window.onload = function() {
+        const dateInput = document.getElementById('targetDate');
+        dateInput.valueAsDate = new Date();
+        const usageGrid = document.getElementById('usage-grid');
+        venues.forEach(v => { usageGrid.innerHTML += `<div><input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="updateResetList()"><label class="usage-label" for="u_${v}">${v}</label></div>`; });
+        updateResetList();
+      };
+
+      function updateChecklistByDate(dateString) {
+        const day = new Date(dateString).getDay(); 
+        document.getElementById('cloth-remind').style.display = [0, 2, 3, 5].includes(day) ? 'flex' : 'none';
+      }
+
+      function handleEnter(e) { if (e.key === 'Enter') enterApp(); }
+
+      function enterApp() {
+        const name = document.getElementById('userName').value.trim();
+        const dateVal = document.getElementById('targetDate').value;
+        if (!name || !dateVal) { alert("日付と名前を入力してください"); return; }
+        updateChecklistByDate(dateVal);
+        document.getElementById('welcome-page').style.display = 'none';
+        document.getElementById('main-page').style.display = 'block';
+        document.getElementById('user-display').innerText = "DATE: " + dateVal + " / STAFF: " + name;
+      }
+
+      function updateResetList() {
+        const resetSection = document.getElementById('reset-section');
+        const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
+        let items = [...baseResetItems];
+        selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
+        const currentVals = {}; document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
+        resetSection.innerHTML = "";
+        items.forEach(name => {
+          const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
+          const labels = resetConfig[key];
+          resetSection.innerHTML += `<div class="card"><span class="fw-bold">● ${name}</span><div class="slider-container py-3"><div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;"><span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span></div><input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}"></div><textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea></div>`;
+        });
+      }
+
+      async function finalSubmit() {
+        const checks = document.querySelectorAll('#checklist-area input[type="checkbox"]');
+        let allChecked = true; checks.forEach(c => { if(c.offsetParent !== null && !c.checked) allChecked = false; });
+        if(!allChecked) { alert("チェックリストをすべて確認してください"); return; }
+
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true;
+        btn.innerText = "SENDING...";
+
+        const payload = { 
+          targetDate: document.getElementById('targetDate').value, 
+          userName: document.getElementById('userName').value, 
+          usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"), 
+          resetData: {}, 
+          pickupInfo: document.getElementById('pickupInfo').value, 
+          otherNote: document.getElementById('otherNote').value 
+        };
+
+        document.querySelectorAll('#reset-section .card').forEach(card => {
+          const nameSpan = card.querySelector('.fw-bold');
+          if(!nameSpan) return;
+          const name = nameSpan.innerText.replace('● ', '').trim();
+          const val = card.querySelector('input[type="range"]').value;
+          const comm = card.querySelector('textarea').value;
+          payload.resetData[name] = { 
+            status: val == 4 ? "完了" : (val == 0 ? "未着" : "リセット途中"), 
+            comment: comm 
+          };
+        });
+
+        try {
+          await fetch(GAS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain" },
+            body: JSON.stringify(payload)
+          });
+          
+          document.getElementById('main-page').style.display = 'none';
+          document.getElementById('ending-page').style.display = 'flex';
+        } catch (e) {
+          alert("送信エラー: " + e.message);
+          btn.disabled = false;
+          btn.innerText = "報告を送信";
+        }
+      }
+    </script>
+  </body>
+</html>
