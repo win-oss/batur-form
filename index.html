@@ -133,18 +133,42 @@
       }
 
       function updateResetList() {
-        const resetSection = document.getElementById('reset-section');
-        const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
-        let items = [...baseResetItems];
-        selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
-        const currentVals = {}; document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
-        resetSection.innerHTML = "";
-        items.forEach(name => {
-          const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
-          const labels = resetConfig[key];
-          resetSection.innerHTML += `<div class="card"><span class="fw-bold">● ${name}</span><div class="slider-container py-3"><div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;"><span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span></div><input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}"></div><textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea></div>`;
-        });
-      }
+    const resetSection = document.getElementById('reset-section');
+    const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
+    let items = [...baseResetItems];
+    selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
+    
+    // 現在の入力値を保持
+    const currentVals = {}; 
+    document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
+    
+    resetSection.innerHTML = "";
+    items.forEach(name => {
+        const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
+        const labels = resetConfig[key];
+        
+        resetSection.innerHTML += `
+            <div class="card">
+                <span class="fw-bold">
+                    ● ${name} 
+                    <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span>
+                </span>
+                <div class="slider-container py-3">
+                    <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;">
+                        <span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span>
+                    </div>
+                    <input type="range" class="form-range" min="0" max="4" step="1" 
+                           value="${currentVals['slide_'+name] || 0}" 
+                           id="slide_${name}" 
+                           oninput="checkStatus('${name}')">
+                </div>
+                <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
+            </div>`;
+        
+        // 描画直後に状態をチェックして、4ならExcellentを表示させる
+        setTimeout(() => checkStatus(name), 0);
+    });
+}
 
       async function finalSubmit() {
         const checks = document.querySelectorAll('#checklist-area input[type="checkbox"]');
