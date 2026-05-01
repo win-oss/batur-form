@@ -191,7 +191,7 @@
         document.querySelectorAll('#reset-section .card').forEach(card => {
           const nameSpan = card.querySelector('.fw-bold');
           if(!nameSpan) return;
-          const name = nameSpan.innerText.replace('● ', '').trim();
+          const name = nameSpan.innerText.split('● ')[1].split(' Excellent!')[0].trim();
           const val = card.querySelector('input[type="range"]').value;
           const comm = card.querySelector('textarea').value;
           payload.resetData[name] = { 
@@ -216,6 +216,15 @@
           btn.innerText = "報告を送信";
         }
       }
+      
+      // スライダーの状態を見て「Excellent!」を出す関数
+function checkStatus(name) {
+    const slide = document.getElementById(`slide_${name}`);
+    const praise = document.getElementById(`praise_${name}`);
+    if (praise && slide) {
+        // スライダーが最大（4）のときだけ表示
+        praise.style.display = (slide.value == 4) ? "inline" : "none";
+    }
     </script>
   </body>
 </html>
