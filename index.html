@@ -151,6 +151,46 @@
       .batur-sub {
         font-family: 'Press Start 2P', cursive !important;
       }
+
+      .usage-label {
+        position: relative;
+        height: 64px;
+        background: #c98232;
+        color: #2b2b2b;
+        border: 4px solid #2b2b2b;
+        box-shadow: 4px 4px 0 #2b2b2b;
+        font-size: 0.85rem;
+        overflow: hidden;
+        transition: transform 0.1s, background 0.2s;
+      }
+
+      .usage-label::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(#2b2b2b 0 0) 0 50% / 100% 3px no-repeat,
+          linear-gradient(#2b2b2b 0 0) 33% 0 / 3px 100% no-repeat,
+          linear-gradient(#2b2b2b 0 0) 66% 0 / 3px 100% no-repeat;
+        opacity: 0.35;
+        pointer-events: none;
+      }
+
+      .pixel-helper {
+        position: absolute;
+        left: 50%;
+        bottom: -28px;
+        transform: translateX(-50%);
+        font-size: 20px;
+        opacity: 0;
+        z-index: 2;
+      }
+
+      .usage-label.block-hit {
+        animation: blockHit 0.35s ease;
+      }
+
+      .usage-label.block-hit .pixel
     </style>
   </head>
   <body>
@@ -237,7 +277,17 @@
         if(dateInput) dateInput.valueAsDate = new Date();
         const usageGrid = document.getElementById('usage-grid');
         if(usageGrid) {
-            venues.forEach(v => { usageGrid.innerHTML += `<div><input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="updateResetList()"><label class="usage-label" for="u_${v}">${v}</label></div>`; });
+            venues.forEach(v => {
+              usageGrid.innerHTML += `
+                <div>
+                  <input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="breakBlock(this); updateResetList();">
+                  <label class="usage-label" for="u_${v}">
+                    <span class="pixel-helper">▲</span>
+                    ${v}
+                  </label>
+                </div>
+            `;
+          });
         }
         updateResetList();
         
@@ -362,7 +412,18 @@
             btn.disabled = false; btn.innerText = "報告を送信";
         }
       }
+      function breakBlock(input) {
+        const label = input.nextElementSibling;
+        if (!label) return;
 
+        label.classList.remove('block-hit');
+        void label.offsetWidth;
+        label.classList.add('block-hit');
+
+        setTimeout(() => {
+          label.classList.remove('block-hit');
+        }, 350);
+      }
       function checkStatus(name) {
         const slide = document.getElementById(`slide_${name}`);
         const praise = document.getElementById(`praise_${name}`);
