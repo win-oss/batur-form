@@ -152,45 +152,107 @@
         font-family: 'Press Start 2P', cursive !important;
       }
 
-      .usage-label {
-        position: relative;
-        height: 64px;
-        background: #c98232;
-        color: #2b2b2b;
-        border: 4px solid #2b2b2b;
-        box-shadow: 4px 4px 0 #2b2b2b;
-        font-size: 0.85rem;
-        overflow: hidden;
-        transition: transform 0.1s, background 0.2s;
-      }
+      .grid-usage {
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: 12px !important;
+  padding-bottom: 36px;
+}
 
-      .usage-label::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background:
-          linear-gradient(#2b2b2b 0 0) 0 50% / 100% 3px no-repeat,
-          linear-gradient(#2b2b2b 0 0) 33% 0 / 3px 100% no-repeat,
-          linear-gradient(#2b2b2b 0 0) 66% 0 / 3px 100% no-repeat;
-        opacity: 0.35;
-        pointer-events: none;
-      }
+.grid-usage > div {
+  position: relative;
+}
 
-      .pixel-helper {
-        position: absolute;
-        left: 50%;
-        bottom: -28px;
-        transform: translateX(-50%);
-        font-size: 20px;
-        opacity: 0;
-        z-index: 2;
-      }
+.usage-label {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: auto;
+  background: #c98232;
+  color: #2b2b2b;
+  border: 4px solid #2b2b2b;
+  box-shadow: 4px 4px 0 #2b2b2b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 6px;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  overflow: visible;
+  cursor: pointer;
+}
 
-      .usage-label.block-hit {
-        animation: blockHit 0.35s ease;
-      }
+.usage-label::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#2b2b2b 0 0) 0 50% / 100% 3px no-repeat,
+    linear-gradient(#2b2b2b 0 0) 33% 0 / 3px 100% no-repeat,
+    linear-gradient(#2b2b2b 0 0) 66% 0 / 3px 100% no-repeat;
+  opacity: 0.35;
+  pointer-events: none;
+}
 
-      .usage-label.block-hit .pixel
+.usage-label .venue-name {
+  position: relative;
+  z-index: 2;
+}
+
+.pixel-helper {
+  position: absolute;
+  left: 50%;
+  bottom: -34px;
+  transform: translateX(-50%);
+  font-size: 24px;
+  opacity: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.usage-label.block-hit {
+  animation: blockHit 0.35s ease;
+}
+
+.usage-label.block-hit .pixel-helper {
+  animation: helperJump 0.35s ease;
+}
+
+.usage-btn:checked + .usage-label {
+  background: #f7d51d;
+  color: #2b2b2b;
+  transform: translate(4px, 4px);
+  box-shadow: none;
+}
+
+.usage-btn:checked + .usage-label::after {
+  background:
+    linear-gradient(45deg, transparent 45%, #2b2b2b 46%, #2b2b2b 54%, transparent 55%),
+    linear-gradient(-45deg, transparent 45%, #2b2b2b 46%, #2b2b2b 54%, transparent 55%);
+  opacity: 0.55;
+}
+
+@keyframes blockHit {
+  0% { transform: translateY(0); }
+  35% { transform: translateY(-10px); }
+  70% { transform: translateY(2px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes helperJump {
+  0% {
+    bottom: -34px;
+    opacity: 0;
+  }
+  35% {
+    bottom: -6px;
+    opacity: 1;
+  }
+  100% {
+    bottom: -34px;
+    opacity: 0;
+  }
+}
     </style>
   </head>
   <body>
