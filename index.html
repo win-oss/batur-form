@@ -354,22 +354,266 @@
     );
   border-top: 4px solid #2b2b2b;
 }
+
+#welcome-page {
+  background: #5c94fc;
+  overflow: hidden;
+}
+
+.title-screen {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 12px 18px 90px;
+  background-color: #5c94fc;
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='40' viewBox='0 0 96 40' shape-rendering='crispEdges'%3E%3Crect x='16' y='16' width='16' height='8' fill='white'/%3E%3Crect x='32' y='8' width='16' height='16' fill='white'/%3E%3Crect x='48' y='0' width='16' height='24' fill='white'/%3E%3Crect x='64' y='8' width='16' height='16' fill='white'/%3E%3Crect x='80' y='16' width='8' height='8' fill='white'/%3E%3Crect x='24' y='24' width='56' height='8' fill='white'/%3E%3Crect x='40' y='32' width='24' height='8' fill='white'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='40' viewBox='0 0 96 40' shape-rendering='crispEdges'%3E%3Crect x='16' y='16' width='16' height='8' fill='white'/%3E%3Crect x='32' y='8' width='16' height='16' fill='white'/%3E%3Crect x='48' y='0' width='16' height='24' fill='white'/%3E%3Crect x='64' y='8' width='16' height='16' fill='white'/%3E%3Crect x='80' y='16' width='8' height='8' fill='white'/%3E%3Crect x='24' y='24' width='56' height='8' fill='white'/%3E%3Crect x='40' y='32' width='24' height='8' fill='white'/%3E%3C/svg%3E");
+  background-repeat: no-repeat, no-repeat;
+  background-size: 96px 40px, 74px 31px;
+  background-position: 24px 82px, calc(100% - 100px) 145px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-hud {
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Press Start 2P', cursive !important;
+  font-size: 0.55rem;
+  line-height: 1.5;
+  color: white;
+  margin-bottom: 18px;
+}
+
+.game-hud span {
+  font-family: 'Press Start 2P', cursive !important;
+}
+
+.game-title {
+  width: min(86vw, 330px);
+  background: #e86d1f;
+  border: 4px solid #2b2b2b;
+  box-shadow:
+    inset 4px 4px 0 #ffb36b,
+    inset -4px -4px 0 #9f3f10,
+    5px 5px 0 #2b2b2b;
+  padding: 14px 8px 10px;
+  text-align: center;
+  margin-top: 8px;
+  margin-bottom: 26px;
+}
+
+.game-title div {
+  font-family: 'Press Start 2P', cursive !important;
+  color: #ffd0aa;
+  text-shadow:
+    3px 0 #2b2b2b,
+    -3px 0 #2b2b2b,
+    0 3px #2b2b2b,
+    0 -3px #2b2b2b;
+  font-size: 1.35rem;
+  line-height: 1.35;
+}
+
+.game-subtitle {
+  margin-top: -14px;
+  margin-bottom: 22px;
+  color: white;
+  font-size: 1rem;
+  line-height: 1.2;
+  text-align: center;
+  text-shadow: 2px 2px 0 #2b2b2b;
+}
+
+.start-panel {
+  width: min(82vw, 280px);
+  z-index: 2;
+}
+
+.press-start {
+  margin-top: 18px;
+  font-size: 0.9rem;
+  color: white;
+  text-shadow: 2px 2px 0 #2b2b2b;
+}
+
+.pixel-ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 64px;
+  background:
+    linear-gradient(#2b2b2b 0 0) 0 0 / 100% 4px no-repeat,
+    repeating-linear-gradient(
+      90deg,
+      #d96f00 0 24px,
+      #ff8c1a 24px 48px
+    );
+}
+
+.pixel-ground::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'%3E%3Cpath d='M0 16 H48 M0 32 H48 M24 0 V16 M12 16 V32 M36 16 V32 M24 32 V48' stroke='%239f4f12' stroke-width='3'/%3E%3C/svg%3E");
+  background-size: 48px 48px;
+}
+
+.title-runner {
+  position: absolute;
+  left: -60px;
+  bottom: 64px;
+  width: 42px;
+  height: 42px;
+  z-index: 3;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' shape-rendering='crispEdges'%3E%3Crect x='16' y='0' width='24' height='8' fill='%233a2418'/%3E%3Crect x='8' y='8' width='40' height='8' fill='%233a2418'/%3E%3Crect x='0' y='16' width='40' height='8' fill='%233a2418'/%3E%3Crect x='0' y='24' width='16' height='16' fill='%233a2418'/%3E%3Crect x='24' y='16' width='24' height='8' fill='%23f4b39d'/%3E%3Crect x='24' y='24' width='32' height='16' fill='%23f4b39d'/%3E%3Crect x='48' y='20' width='8' height='8' fill='%23005588'/%3E%3Crect x='16' y='32' width='16' height='8' fill='%23006bb6'/%3E%3Crect x='32' y='32' width='24' height='8' fill='%23ff3333'/%3E%3Crect x='8' y='40' width='48' height='16' fill='%23006bb6'/%3E%3Crect x='0' y='48' width='16' height='8' fill='%23f4b39d'/%3E%3Crect x='48' y='48' width='16' height='8' fill='%23f4b39d'/%3E%3Crect x='16' y='56' width='16' height='8' fill='%233a2418'/%3E%3Crect x='40' y='56' width='16' height='8' fill='%233a2418'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  filter: drop-shadow(3px 3px 0 #2b2b2b);
+  animation:
+    titleRunnerMove 5s linear infinite,
+    titleRunnerBob 0.28s steps(2) infinite;
+}
+
+@keyframes titleRunnerMove {
+  0% {
+    left: -60px;
+  }
+  100% {
+    left: calc(100% + 60px);
+  }
+}
+
+@keyframes titleRunnerBob {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-3px);
+  }
+}
+
+  .pixel-mountain {
+  position: absolute;
+  bottom: 64px;
+  width: 96px;
+  height: 72px;
+  background: #2fb34a;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  z-index: 1;
+}
+
+.pixel-mountain::before {
+  content: "";
+  position: absolute;
+  left: 34px;
+  top: 22px;
+  width: 10px;
+  height: 10px;
+  background: #0c7a2c;
+  box-shadow:
+    22px 10px 0 #0c7a2c,
+    -8px 24px 0 #0c7a2c;
+}
+
+.pixel-mountain::after {
+  content: "";
+  position: absolute;
+  left: 42px;
+  top: 16px;
+  width: 12px;
+  height: 12px;
+  background: #8ef27c;
+  box-shadow:
+    -14px 24px 0 #8ef27c,
+    18px 34px 0 #8ef27c;
+}
+
+.mountain-left {
+  left: 20px;
+}
+
+.mountain-right {
+  right: 24px;
+  width: 74px;
+  height: 54px;
+  background: #69d65a;
+}
+
+#iris-transition {
+  position: fixed;
+  inset: 0;
+  background: #2b2b2b;
+  clip-path: circle(150% at 50% 50%);
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0;
+}
+
+#iris-transition.iris-close {
+  opacity: 1;
+  animation: irisClose 0.45s ease forwards;
+}
+
+#iris-transition.iris-open {
+  opacity: 1;
+  animation: irisOpen 0.45s ease forwards;
+}
+
+@keyframes irisClose {
+  0% {
+    clip-path: circle(150% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(0% at 50% 50%);
+  }
+}
+
+@keyframes irisOpen {
+  0% {
+    clip-path: circle(0% at 50% 50%);
+  }
+  100% {
+    clip-path: circle(150% at 50% 50%);
+    opacity: 0;
+  }
+}
 </style>
   </head>
   <body>
 
     <!-- ページ1: ウェルカム -->
     <div id="welcome-page" class="page" style="display: flex;">
-      <div class="batur-card">
-        <div class="title-group">
-          <div class="batur-logo-text">BATUR</div>
-          <div class="batur-sub">TOKYO</div>
-          <div class="batur-form-title">引き継ぎフォーム</div>
-        </div>
-        <p class="small mb-3 text-center">日付と担当者を入力してください</p>
-        <input type="date" id="targetDate" class="form-control mb-3 text-center">
-        <input type="text" id="userName" class="form-control form-control-lg mb-4 text-center" placeholder="NAME">
-        <button type="button" class="btn btn-batur" id="enterBtn">入室</button>
+      <div class="title-screen">
+      <div class="game-hud">
+        <div>BATUR<br><span>000000</span></div>
+        <div>WORLD<br><span>1-1</span></div>
+        <div>TIME<br><span>000</span></div>
+      </div>
+
+      <div class="game-title">
+        <div>BATUR</div>
+        <div>TOKYO</div>
+      </div>
+
+      <div class="game-subtitle">引き継ぎフォーム</div>
+
+      <div class="start-panel">
+        <input type="date" id="targetDate" class="form-control text-center mb-2">
+        <input type="text" id="userName" class="form-control text-center mb-3" placeholder="NAME">
+        <button type="button" class="btn btn-batur" id="enterBtn">START</button>
+      </div>
+      <div class="pixel-mountain mountain-left"></div>
+      <div class="pixel-mountain mountain-right"></div>
+      <div class="title-runner"></div>
+      <div class="pixel-ground"></div>
       </div>
     </div>
 
@@ -467,6 +711,31 @@
         document.getElementById('enterBtn').addEventListener('click', enterApp);
         document.getElementById('submitBtn').addEventListener('click', finalSubmit);
       };
+
+          function transitionToPage(fromId, toId, toDisplay) {
+      const iris = document.getElementById('iris-transition');
+      const fromPage = document.getElementById(fromId);
+      const toPage = document.getElementById(toId);
+
+      if (!iris || !fromPage || !toPage) {
+        fromPage.style.display = 'none';
+        toPage.style.display = toDisplay;
+        return;
+      }
+
+      iris.className = 'iris-close';
+
+      setTimeout(() => {
+        fromPage.style.display = 'none';
+        toPage.style.display = toDisplay;
+
+        iris.className = 'iris-open';
+
+        setTimeout(() => {
+          iris.className = '';
+        }, 450);
+      }, 450);
+    }
       function showCoinBonus() {
         const coin = document.createElement('div');
         coin.className = 'coin-popup';
@@ -496,8 +765,7 @@
 
         if (!name || !dateVal) { alert("日付と名前を入力してください"); return; }
         updateChecklistByDate(dateVal);
-        document.getElementById('welcome-page').style.display = 'none';
-        document.getElementById('main-page').style.display = 'block';
+        transitionToPage('welcome-page', 'main-page', 'block');
         const userDisplay = document.getElementById('user-display');
         if(userDisplay) userDisplay.innerText = "DATE: " + dateVal + " / STAFF: " + name;
         updateResetList();
@@ -577,8 +845,7 @@
 
         try {
             await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
-            document.getElementById('main-page').style.display = 'none';
-            document.getElementById('ending-page').style.display = 'flex';
+            transitionToPage('main-page', 'ending-page', 'flex');
         } catch (e) {
             alert("送信エラー: " + e.message);
             btn.disabled = false; btn.innerText = "報告を送信";
@@ -615,5 +882,6 @@
         }
       }
     </script>
+    <div id="iris-transition"></div>
   </body>
 </html>
