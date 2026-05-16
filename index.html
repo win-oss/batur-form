@@ -4,6 +4,8 @@
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
       :root { --batur-gold: #c5a36b; --batur-dark: #4a3d33; --batur-bg: #f4f1ed; }
       body { background-color: var(--batur-bg); font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; color: var(--batur-dark); margin: 0; }
@@ -27,6 +29,109 @@
       .check-item input { margin-right: 12px; margin-top: 4px; transform: scale(1.2); accent-color: var(--batur-dark); }
       .special-remind { color: #d63384; font-weight: bold; border: 1px dashed #d63384; padding: 8px; background: #fff0f5; }
       .fixed-bottom-btn { position: fixed; bottom: 0; left: 0; right: 0; padding: 20px; background: rgba(255,255,255,0.95); z-index: 1000; border-top: 1px solid var(--batur-gold); }
+      :root {
+      --pixel-black: #2b2b2b;
+      --pixel-gold: #f7d51d;
+      --pixel-sky: #5cc8ff;
+      --pixel-green: #7ad05a;
+      --pixel-white: #fff8dc;
+      }
+
+      body {
+        font-family: 'Press Start 2P', cursive;
+        background:
+          linear-gradient(
+            to bottom,
+            var(--pixel-sky) 0%,
+            var(--pixel-sky) 65%,
+            var(--pixel-green) 65%,
+            var(--pixel-green) 100%
+          );
+        image-rendering: pixelated;
+      }
+
+      .batur-logo-text,
+      .batur-sub,
+      .batur-form-title,
+      .section-title,
+      button {
+        font-family: 'Press Start 2P', cursive !important;
+      }
+
+      .batur-card,
+      .card {
+        background: var(--pixel-white);
+        border: 4px solid var(--pixel-black);
+        border-radius: 0;
+        box-shadow: 8px 8px 0 var(--pixel-black);
+      }
+
+      .batur-card::before {
+        display: none;
+      }
+
+      .btn-batur {
+        background: var(--pixel-gold);
+        color: var(--pixel-black);
+        border: 4px solid var(--pixel-black);
+        box-shadow: 4px 4px 0 var(--pixel-black);
+        letter-spacing: 1px;
+      }
+
+      .btn-batur:active {
+        transform: translate(4px, 4px);
+        box-shadow: none;
+      }
+
+      .app-header {
+        background: var(--pixel-black);
+        color: white;
+        border-bottom: 4px solid var(--pixel-gold);
+      }
+
+      input, textarea {
+        border: 3px solid var(--pixel-black) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+      }
+
+      .usage-label {
+        border: 3px solid var(--pixel-black);
+        border-radius: 0;
+      }
+
+      .usage-btn:checked + .usage-label {
+        background: var(--pixel-gold);
+        color: var(--pixel-black);
+      }
+          .coin-popup {
+        position: fixed;
+        left: 50%;
+        top: 40%;
+        transform: translateX(-50%);
+        font-family: 'Press Start 2P', cursive;
+        font-size: 16px;
+        background: #f7d51d;
+        border: 4px solid #2b2b2b;
+        padding: 16px 20px;
+        z-index: 9999;
+        animation: coinJump 1.5s ease forwards;
+      }
+
+      @keyframes coinJump {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(30px) scale(0.5);
+        }
+        20% {
+          opacity: 1;
+          transform: translateX(-50%) translateY(-50px) scale(1.2);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(-50%) translateY(-100px);
+        }
+      }
     </style>
   </head>
   <body>
@@ -94,7 +199,7 @@
 
     <!-- ページ3: サンクスページ -->
     <div id="ending-page" class="page">
-      <div class="batur-card text-center>
+      <div class="batur-card text-center">
         <div class="batur-logo-text" style="font-size:1.5rem; letter-spacing:3px; margin-bottom:10px;">THANK YOU</div>
         <p class="mb-4 text-center">引き継ぎ報告ありがとうございます！<br>お疲れ様でした！</p>
         <button class="btn btn-batur w-100" onclick="location.reload()">新しい報告を作成</button>
@@ -106,7 +211,8 @@
       const venues = ["メイン", "ヴィラ", "ヴィラエントランス", "メインエントランス", "チャペル", "控室①", "控室②", "控室③", "サロン"];
       const baseResetItems = ["1Fトイレ", "喫煙所"];
       const resetConfig = { "1Fトイレ": ["未着", "ごみ捨て", "完了"], "喫煙所": ["未着", "灰皿交換", "完了"], "メイン": ["未着", "フラット", "完了"], "ヴィラ": ["未着", "フラット", "完了"], "チャペル": ["未着", "フラット", "完了"], "控室": ["未着", "ごみ捨て", "完了"], "default": ["未着", "作業中", "完了"] };
-
+      const coinSound = new Audio('coin.mp3');
+      const bonusTriggered = {};
       window.onload = function() {
         const dateInput = document.getElementById('targetDate');
         if(dateInput) dateInput.valueAsDate = new Date();
@@ -120,7 +226,19 @@
         document.getElementById('enterBtn').addEventListener('click', enterApp);
         document.getElementById('submitBtn').addEventListener('click', finalSubmit);
       };
+      function showCoinBonus() {
+        const coin = document.createElement('div');
+        coin.className = 'coin-popup';
+        coin.innerText = '🪙 +100';
+        document.body.appendChild(coin);
 
+        coinSound.currentTime = 0;
+        coinSound.play();
+
+        setTimeout(() => {
+          coin.remove();
+        }, 1500);
+      }
       function updateChecklistByDate(dateString) {
         const day = new Date(dateString).getDay(); 
         const remind = document.getElementById('cloth-remind');
@@ -180,14 +298,32 @@
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerText = "SENDING...";
+        const photoInput = document.getElementById('photoFile');
+        let photoData = null;
 
+        if (photoInput.files.length > 0) {
+          const file = photoInput.files[0];
+
+          photoData = await new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+              resolve({
+                name: file.name,
+                type: file.type,
+                data: reader.result
+              });
+            };
+            reader.readAsDataURL(file);
+          });
+          }
         const payload = { 
             targetDate: document.getElementById('targetDate').value, 
             userName: document.getElementById('userName').value, 
             usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"), 
             resetData: {}, 
             pickupInfo: document.getElementById('pickupInfo').value, 
-            otherNote: document.getElementById('otherNote').value 
+            otherNote: document.getElementById('otherNote').value,
+            photo: photoData
         };
 
         document.querySelectorAll('#reset-section .card').forEach(card => {
@@ -211,8 +347,19 @@
       function checkStatus(name) {
         const slide = document.getElementById(`slide_${name}`);
         const praise = document.getElementById(`praise_${name}`);
+
         if (praise && slide) {
-            praise.style.display = (slide.value == 4) ? "inline" : "none";
+          const completed = slide.value == 4;
+          praise.style.display = completed ? "inline" : "none";
+
+          if (completed && !bonusTriggered[name]) {
+            bonusTriggered[name] = true;
+            showCoinBonus();
+          }
+
+          if (!completed) {
+            bonusTriggered[name] = false;
+          }
         }
       }
     </script>
