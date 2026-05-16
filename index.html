@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
       :root { --batur-gold: #c5a36b; --batur-dark: #4a3d33; --batur-bg: #f4f1ed; }
       body { background-color: var(--batur-bg); font-family: "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Hiragino Sans", Meiryo, sans-serif; color: var(--batur-dark); margin: 0; }
@@ -38,7 +38,7 @@
       }
 
       body {
-        font-family: 'Press Start 2P', cursive;
+        font-family: 'DotGothic16', 'Press Start 2P', cursive;
         background:
           linear-gradient(
             to bottom,
@@ -50,13 +50,22 @@
         image-rendering: pixelated;
       }
 
-      .batur-logo-text,
-      .batur-sub,
-      .batur-form-title,
-      .section-title,
-      button {
-        font-family: 'Press Start 2P', cursive !important;
-      }
+      body,
+        input,
+        textarea,
+        label,
+        span,
+        p,
+        .section-title,
+        .batur-form-title,
+        button {
+          font-family: 'DotGothic16', sans-serif !important;
+        }
+
+        .batur-logo-text,
+        .batur-sub {
+          font-family: 'Press Start 2P', cursive !important;
+        }
 
       .batur-card,
       .card {
