@@ -201,6 +201,11 @@
     inset -2px -2px 0 rgba(255, 190, 90, 0.35);
 }
 
+.setup-close-btn {
+  background: #fff8dc;
+  color: #2b2b2b;
+}
+
 .ending-stage {
   position: relative;
   width: 100%;
@@ -478,8 +483,40 @@
   image-rendering: pixelated;
   filter: drop-shadow(3px 3px 0 #2b2b2b);
   animation:
-    titleRunnerMove 5s linear infinite,
+    titleRunnerMove 12s linear infinite,
     titleRunnerBob 0.28s steps(2) infinite;
+  overflow: visible;
+}
+
+.runner-bubble {
+  position: absolute;
+  left: 34px;
+  bottom: 34px;
+  width: 200px;
+  max-width: 70vw;
+  text-align: center;
+  padding: 8px 10px;
+  background: #fff8dc;
+  border: 3px solid #2b2b2b;
+  color: #2b2b2b;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  box-shadow: 3px 3px 0 #2b2b2b;
+  z-index: 10;
+}
+
+.runner-bubble::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  bottom: -9px;
+  width: 10px;
+  height: 10px;
+  background: #fff8dc;
+  border-right: 3px solid #2b2b2b;
+  border-bottom: 3px solid #2b2b2b;
+  transform: rotate(45deg);
 }
 
 @keyframes titleRunnerMove {
@@ -627,7 +664,9 @@
   }
 
   .start-panel input {
-    padding: 6px 8px
+    padding: 6px 8px;
+  }
+}
 </style>
   </head>
   <body>
@@ -655,7 +694,11 @@
       </div>
       <div class="pixel-mountain mountain-left"></div>
       <div class="pixel-mountain mountain-right"></div>
-      <div class="title-runner"></div>
+      <div class="title-runner">
+        <span class="runner-bubble">2026年上半期ももうすぐ終わり</span>
+      </div>
+        
+    </div>
       <div class="pixel-ground"></div>
       </div>
     </div>
@@ -676,6 +719,11 @@
 
       <div class="section-title">リセット状況 / RESET STATUS</div>
       <div id="reset-section"></div>
+
+      <div class="card setup-add-card">
+        <button type="button" class="btn btn-batur" onclick="showSetupVenuePicker()">＋ 会場・項目を追加</button>
+        <div id="setup-picker" class="setup-picker" style="display:none;"></div>
+      </div>
 
       <div class="section-title">集荷・写真 / PICKUP & PHOTO</div>
       <div class="card">
@@ -729,7 +777,9 @@
       const GAS_URL = "https://script.google.com/macros/s/AKfycbwtDjSvwmxwt6c63BFdCGrUzys4qYvwH_DAE_GFgZTu13VwtPADmlpnbUXxG58Y7XxD/exec";
       const venues = ["メイン", "ヴィラ", "ヴィラエントランス", "メインエントランス", "チャペル", "控室①", "控室②", "控室③", "サロン"];
       const baseResetItems = ["1Fトイレ", "喫煙所"];
+      const hiddenResetItems = [];
       const resetConfig = { "1Fトイレ": ["未着", "ごみ捨て", "完了"], "喫煙所": ["未着", "灰皿交換", "完了"], "メイン": ["未着", "フラット", "完了"], "ヴィラ": ["未着", "フラット", "完了"], "チャペル": ["未着", "フラット", "完了"], "控室": ["未着", "ごみ捨て", "完了"], "default": ["未着", "作業中", "完了"] };
+      const extraSetupVenues = [];
       const coinSound = new Audio('coin.mp3');
       const bonusTriggered = {};
       window.onload = function() {
@@ -779,6 +829,54 @@
         }, 450);
       }, 450);
     }
+    
+    function showSetupVenuePicker() {
+          const picker = document.getElementById('setup-picker');
+          if (!picker) return;
+
+          picker.innerHTML = "";
+
+          const addableItems = [...baseResetItems, ...venues];
+
+          addableItems.forEach(v => {
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'setup-venue-btn';
+            btn.innerText = v;
+            btn.onclick = () => addSetupVenue(v);
+            picker.appendChild(btn);
+          });
+
+          const closeBtn = document.createElement('button');
+          closeBtn.type = 'button';
+          closeBtn.className = 'setup-venue-btn setup-close-btn';
+          closeBtn.innerText = '閉じる';
+          closeBtn.onclick = hideSetupVenuePicker;
+          picker.appendChild(closeBtn);
+
+          picker.style.display = 'grid';
+        }
+
+      function hideSetupVenuePicker() {
+        const picker = document.getElementById('setup-picker');
+        if (picker) picker.style.display = 'none';
+      }
+
+     function addSetupVenue(venue) {
+        const hiddenIndex = hiddenResetItems.indexOf(venue);
+        if (hiddenIndex !== -1) {
+          hiddenResetItems.splice(hiddenIndex, 1);
+        }
+
+        if (!baseResetItems.includes(venue) && !extraSetupVenues.includes(venue)) {
+          extraSetupVenues.push(venue);
+        }
+
+        const picker = document.getElementById('setup-picker');
+        if (picker) picker.style.display = 'none';
+
+        updateResetList();
+      }
       function showCoinBonus() {
         const coin = document.createElement('div');
         coin.className = 'coin-popup';
@@ -824,13 +922,40 @@
         updateResetList();
       }
 
+      function removeResetItem(name) {
+  if (baseResetItems.includes(name)) {
+    if (!hiddenResetItems.includes(name)) {
+      hiddenResetItems.push(name);
+    }
+  }
+
+  const setupIndex = extraSetupVenues.indexOf(name);
+  if (setupIndex !== -1) {
+    extraSetupVenues.splice(setupIndex, 1);
+  }
+
+  const usageInput = document.getElementById(`u_${name}`);
+  if (usageInput) {
+    usageInput.checked = false;
+  }
+
+  updateResetList();
+}
+      
       function updateResetList() {
         const resetSection = document.getElementById('reset-section');
         if(!resetSection) return;
         const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
-        let items = [...baseResetItems];
-        selected.forEach(v => { if (!v.includes("エントランス") && !items.includes(v)) items.push(v); });
-        
+
+        let items = baseResetItems.filter(item => !hiddenResetItems.includes(item));
+
+        selected.forEach(v => {
+          if (!v.includes("エントランス") && !items.includes(v)) items.push(v);
+        });
+
+        extraSetupVenues.forEach(v => {
+          if (!v.includes("エントランス") && !items.includes(v)) items.push(v);
+        });
         const currentVals = {}; 
         document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
         
@@ -840,8 +965,15 @@
             const labels = resetConfig[key];
             resetSection.innerHTML += `
                 <div class="card">
-                    <span class="fw-bold">● ${name} <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span></span>
-                    <div class="slider-container py-3">
+                  <div class="reset-card-title">
+                    <span class="fw-bold">
+                      ● ${name} 
+                      <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span>
+                    </span>
+                    <button type="button" class="trash-btn" onclick="removeResetItem('${name}')">🗑削除</button>
+                  </div>
+
+                  <div class="slider-container py-3">
                         <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;"><span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span></div>
                         <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
                     </div>
