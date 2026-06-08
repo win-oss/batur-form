@@ -383,6 +383,38 @@
   align-items: center;
 }
 
+.title-screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' shape-rendering='crispEdges'%3E%3Crect x='8' y='0' width='3' height='12' fill='%23cfefff' opacity='0.8'/%3E%3Crect x='30' y='18' width='3' height='12' fill='%23cfefff' opacity='0.65'/%3E%3C/svg%3E");
+  background-size: 48px 48px;
+  background-repeat: repeat;
+  opacity: 0.65;
+  pointer-events: none;
+  z-index: 0;
+  animation: rainFall 0.45s linear infinite;
+  .game-hud,
+.game-title,
+.game-subtitle,
+.start-panel,
+.pixel-mountain,
+.title-runner,
+.pixel-ground {
+  position: relative;
+  z-index: 2;
+}
+}
+
+@keyframes rainFall {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 48px;
+  }
+}
+
 .game-hud {
   width: 100%;
   max-width: 360px;
@@ -486,6 +518,25 @@
     titleRunnerMove 12s linear infinite,
     titleRunnerBob 0.28s steps(2) infinite;
   overflow: visible;
+}
+
+.title-runner {
+  overflow: visible;
+}
+
+.title-runner::before {
+  content: "";
+  position: absolute;
+  left: -8px;
+  top: -30px;
+  width: 58px;
+  height: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 48' shape-rendering='crispEdges'%3E%3Crect x='28' y='18' width='4' height='30' fill='%232b2b2b'/%3E%3Crect x='8' y='18' width='48' height='4' fill='%232b2b2b'/%3E%3Crect x='12' y='10' width='40' height='8' fill='%23ff5fa2'/%3E%3Crect x='16' y='4' width='32' height='8' fill='%23ff7fba'/%3E%3Crect x='24' y='0' width='16' height='4' fill='%23ffb3d4'/%3E%3Crect x='8' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='24' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='40' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='52' y='14' width='4' height='8' fill='%23ff5fa2'/%3E%3Crect x='24' y='44' width='12' height='4' fill='%232b2b2b'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  z-index: 4;
+  pointer-events: none;
 }
 
 .runner-bubble {
@@ -695,7 +746,7 @@
       <div class="pixel-mountain mountain-left"></div>
       <div class="pixel-mountain mountain-right"></div>
       <div class="title-runner">
-        <span class="runner-bubble">今週末も大皿FEVER乗り越えましょう★</span>
+        <span class="runner-bubble">雨の匂いは「ペトリコール」というらしい</span>
       </div>
         
     </div>
