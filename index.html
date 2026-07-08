@@ -601,6 +601,57 @@
   background: #69d65a;
 }
 
+.pixel-sunflower {
+  position: absolute;
+  bottom: 64px;
+  width: 34px;
+  height: 58px;
+  z-index: 2;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+.pixel-sunflower::before {
+  content: "";
+  position: absolute;
+  left: 14px;
+  bottom: 0;
+  width: 6px;
+  height: 34px;
+  background: #15803d;
+  box-shadow:
+    -8px 14px 0 #22c55e,
+    8px 20px 0 #22c55e;
+}
+
+.pixel-sunflower::after {
+  content: "";
+  position: absolute;
+  left: 7px;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  background: #6b3f12;
+  box-shadow:
+    0 -8px 0 #ffd83d,
+    0 8px 0 #ffd83d,
+    -8px 0 0 #ffd83d,
+    8px 0 0 #ffd83d,
+    -6px -6px 0 #ffb703,
+    6px -6px 0 #ffb703,
+    -6px 6px 0 #ffb703,
+    6px 6px 0 #ffb703;
+}
+
+.sunflower-left {
+  left: 135px;
+}
+
+.sunflower-right {
+  right: 128px;
+  transform: scale(0.85);
+}
+
 #iris-transition {
   position: fixed;
   inset: 0;
@@ -683,6 +734,9 @@
   .start-panel input {
     padding: 6px 8px;
   }
+
+  
+
 }
 </style>
   </head>
@@ -712,8 +766,11 @@
 
         <div class="pixel-mountain mountain-left"></div>
         <div class="pixel-mountain mountain-right"></div>
+
+        <div class="pixel-sunflower sunflower-left"></div>
+        <div class="pixel-sunflower sunflower-right"></div>
         <div class="title-runner">
-          <span class="runner-bubble">今日もよろしく！</span>
+          <span class="runner-bubble">水分補給は忘れずに🥤</span>
         </div>
         <div class="pixel-ground"></div>
       </div>
