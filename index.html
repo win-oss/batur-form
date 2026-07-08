@@ -1,6 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <base target="_top">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -383,18 +384,7 @@
   align-items: center;
 }
 
-.title-screen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48' shape-rendering='crispEdges'%3E%3Crect x='8' y='0' width='3' height='12' fill='%23cfefff' opacity='0.8'/%3E%3Crect x='30' y='18' width='3' height='12' fill='%23cfefff' opacity='0.65'/%3E%3C/svg%3E");
-  background-size: 48px 48px;
-  background-repeat: repeat;
-  opacity: 0.65;
-  pointer-events: none;
-  z-index: 0;
-  animation: rainFall 0.45s linear infinite;
-  .game-hud,
+.game-hud,
 .game-title,
 .game-subtitle,
 .start-panel,
@@ -403,16 +393,6 @@
 .pixel-ground {
   position: relative;
   z-index: 2;
-}
-}
-
-@keyframes rainFall {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 0 48px;
-  }
 }
 
 .game-hud {
@@ -524,20 +504,6 @@
   overflow: visible;
 }
 
-.title-runner::before {
-  content: "";
-  position: absolute;
-  left: -8px;
-  top: -30px;
-  width: 58px;
-  height: 42px;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 48' shape-rendering='crispEdges'%3E%3Crect x='28' y='18' width='4' height='30' fill='%232b2b2b'/%3E%3Crect x='8' y='18' width='48' height='4' fill='%232b2b2b'/%3E%3Crect x='12' y='10' width='40' height='8' fill='%23ff5fa2'/%3E%3Crect x='16' y='4' width='32' height='8' fill='%23ff7fba'/%3E%3Crect x='24' y='0' width='16' height='4' fill='%23ffb3d4'/%3E%3Crect x='8' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='24' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='40' y='14' width='8' height='8' fill='%23ff5fa2'/%3E%3Crect x='52' y='14' width='4' height='8' fill='%23ff5fa2'/%3E%3Crect x='24' y='44' width='12' height='4' fill='%232b2b2b'/%3E%3C/svg%3E");
-  background-size: contain;
-  background-repeat: no-repeat;
-  image-rendering: pixelated;
-  z-index: 4;
-  pointer-events: none;
-}
 
 .runner-bubble {
   position: absolute;
@@ -720,37 +686,36 @@
 }
 </style>
   </head>
-  <body>
+    <body>
 
     <!-- ページ1: ウェルカム -->
     <div id="welcome-page" class="page" style="display: flex;">
       <div class="title-screen">
-      <div class="game-hud">
-        <div>BATUR<br><span>000000</span></div>
-        <div>WORLD<br><span>1-1</span></div>
-        <div>TIME<br><span>000</span></div>
-      </div>
+        <div class="game-hud">
+          <div>BATUR<br><span>000000</span></div>
+          <div>WORLD<br><span>1-1</span></div>
+          <div>TIME<br><span>000</span></div>
+        </div>
 
-      <div class="game-title">
-        <div>BATUR</div>
-        <div>TOKYO</div>
-      </div>
+        <div class="game-title">
+          <div>BATUR</div>
+          <div>TOKYO</div>
+        </div>
 
-      <div class="game-subtitle">引き継ぎフォーム</div>
+        <div class="game-subtitle">引き継ぎフォーム</div>
 
-      <div class="start-panel">
-        <input type="date" id="targetDate" class="form-control text-center mb-2">
-        <input type="text" id="userName" class="form-control text-center mb-3" placeholder="NAME">
-        <button type="button" class="btn btn-batur" id="enterBtn">START</button>
-      </div>
-      <div class="pixel-mountain mountain-left"></div>
-      <div class="pixel-mountain mountain-right"></div>
-      <div class="title-runner">
-        <span class="runner-bubble">雨の匂いは「ペトリコール」というらしい</span>
-      </div>
-        
-    </div>
-      <div class="pixel-ground"></div>
+        <div class="start-panel">
+          <input type="date" id="targetDate" class="form-control text-center mb-2">
+          <input type="text" id="userName" class="form-control text-center mb-3" placeholder="NAME">
+          <button type="button" class="btn btn-batur" id="enterBtn">START</button>
+        </div>
+
+        <div class="pixel-mountain mountain-left"></div>
+        <div class="pixel-mountain mountain-right"></div>
+        <div class="title-runner">
+          <span class="runner-bubble">今日もよろしく！</span>
+        </div>
+        <div class="pixel-ground"></div>
       </div>
     </div>
 
@@ -807,113 +772,120 @@
 
     <!-- ページ3: サンクスページ -->
     <div id="ending-page" class="page">
-    <div class="ending-stage">
-      <div class="goal-pole">
-        <div class="goal-flag">GOAL</div>
+      <div class="ending-stage">
+        <div class="goal-pole">
+          <div class="goal-flag">GOAL</div>
+        </div>
+
+        <div class="pixel-runner"></div>
+        <div class="ending-ground"></div>
+
+        <div class="batur-card text-center ending-card">
+          <div class="batur-logo-text" style="font-size:1.5rem; letter-spacing:3px; margin-bottom:10px;">THANK YOU</div>
+          <p class="mb-4 text-center">引き継ぎ報告ありがとうございます！<br>お疲れ様でした！</p>
+          <button class="btn btn-batur w-100" onclick="location.reload()">新しい報告を作成</button>
+        </div>
       </div>
-
-    <div class="pixel-runner"></div>
-
-    <div class="ending-ground"></div>
-
-    <div class="batur-card text-center ending-card">
-      <div class="batur-logo-text" style="font-size:1.5rem; letter-spacing:3px; margin-bottom:10px;">THANK YOU</div>
-      <p class="mb-4 text-center">引き継ぎ報告ありがとうございます！<br>お疲れ様でした！</p>
-      <button class="btn btn-batur w-100" onclick="location.reload()">新しい報告を作成</button>
     </div>
-  </div>
-</div>
 
     <script>
       const GAS_URL = "https://script.google.com/macros/s/AKfycbwtDjSvwmxwt6c63BFdCGrUzys4qYvwH_DAE_GFgZTu13VwtPADmlpnbUXxG58Y7XxD/exec";
       const venues = ["メイン", "ヴィラ", "ヴィラエントランス", "メインエントランス", "チャペル", "控室①", "控室②", "控室③", "サロン"];
       const baseResetItems = ["1Fトイレ", "喫煙所"];
       const hiddenResetItems = [];
-      const resetConfig = { "1Fトイレ": ["未着", "ごみ捨て", "完了"], "喫煙所": ["未着", "灰皿交換", "完了"], "メイン": ["未着", "フラット", "完了"], "ヴィラ": ["未着", "フラット", "完了"], "チャペル": ["未着", "フラット", "完了"], "控室": ["未着", "ごみ捨て", "完了"], "default": ["未着", "作業中", "完了"] };
+      const resetConfig = {
+        "1Fトイレ": ["未着", "ごみ捨て", "完了"],
+        "喫煙所": ["未着", "灰皿交換", "完了"],
+        "メイン": ["未着", "フラット", "完了"],
+        "ヴィラ": ["未着", "フラット", "完了"],
+        "チャペル": ["未着", "フラット", "完了"],
+        "控室": ["未着", "ごみ捨て", "完了"],
+        "default": ["未着", "作業中", "完了"]
+      };
       const extraSetupVenues = [];
       const coinSound = new Audio('coin.mp3');
       const bonusTriggered = {};
+
       window.onload = function() {
         const dateInput = document.getElementById('targetDate');
         if(dateInput) dateInput.valueAsDate = new Date();
+
         const usageGrid = document.getElementById('usage-grid');
         if(usageGrid) {
-            venues.forEach(v => {
-              usageGrid.innerHTML += `
-                <div>
-                  <input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="breakBlock(this); updateResetList();">
-                  <label class="usage-label" for="u_${v}">
-                      <span class="venue-name">${v}</span>
-                  </label>
-                </div>
+          venues.forEach(v => {
+            usageGrid.innerHTML += `
+              <div>
+                <input type="checkbox" class="usage-btn" style="display:none" id="u_${v}" name="usage" value="${v}" onchange="breakBlock(this); updateResetList();">
+                <label class="usage-label" for="u_${v}">
+                  <span class="venue-name">${v}</span>
+                </label>
+              </div>
             `;
           });
         }
         updateResetList();
-        
-        // スマホでボタンのクリックを確実に拾うための設定
+
         document.getElementById('enterBtn').addEventListener('click', enterApp);
         document.getElementById('submitBtn').addEventListener('click', finalSubmit);
       };
 
-          function transitionToPage(fromId, toId, toDisplay) {
-      const iris = document.getElementById('iris-transition');
-      const fromPage = document.getElementById(fromId);
-      const toPage = document.getElementById(toId);
+      function transitionToPage(fromId, toId, toDisplay) {
+        const iris = document.getElementById('iris-transition');
+        const fromPage = document.getElementById(fromId);
+        const toPage = document.getElementById(toId);
 
-      if (!iris || !fromPage || !toPage) {
-        fromPage.style.display = 'none';
-        toPage.style.display = toDisplay;
-        return;
-      }
+        if (!iris || !fromPage || !toPage) {
+          fromPage.style.display = 'none';
+          toPage.style.display = toDisplay;
+          return;
+        }
 
-      iris.className = 'iris-close';
-
-      setTimeout(() => {
-        fromPage.style.display = 'none';
-        toPage.style.display = toDisplay;
-
-        iris.className = 'iris-open';
+        iris.className = 'iris-close';
 
         setTimeout(() => {
-          iris.className = '';
+          fromPage.style.display = 'none';
+          toPage.style.display = toDisplay;
+
+          iris.className = 'iris-open';
+
+          setTimeout(() => {
+            iris.className = '';
+          }, 450);
         }, 450);
-      }, 450);
-    }
-    
-    function showSetupVenuePicker() {
-          const picker = document.getElementById('setup-picker');
-          if (!picker) return;
+      }
 
-          picker.innerHTML = "";
+      function showSetupVenuePicker() {
+        const picker = document.getElementById('setup-picker');
+        if (!picker) return;
 
-          const addableItems = [...baseResetItems, ...venues];
+        picker.innerHTML = "";
+        const addableItems = [...baseResetItems, ...venues];
 
-          addableItems.forEach(v => {
-            const btn = document.createElement('button');
-            btn.type = 'button';
-            btn.className = 'setup-venue-btn';
-            btn.innerText = v;
-            btn.onclick = () => addSetupVenue(v);
-            picker.appendChild(btn);
-          });
+        addableItems.forEach(v => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'setup-venue-btn';
+          btn.innerText = v;
+          btn.onclick = () => addSetupVenue(v);
+          picker.appendChild(btn);
+        });
 
-          const closeBtn = document.createElement('button');
-          closeBtn.type = 'button';
-          closeBtn.className = 'setup-venue-btn setup-close-btn';
-          closeBtn.innerText = '閉じる';
-          closeBtn.onclick = hideSetupVenuePicker;
-          picker.appendChild(closeBtn);
+        const closeBtn = document.createElement('button');
+        closeBtn.type = 'button';
+        closeBtn.className = 'setup-venue-btn setup-close-btn';
+        closeBtn.innerText = '閉じる';
+        closeBtn.onclick = hideSetupVenuePicker;
+        picker.appendChild(closeBtn);
 
-          picker.style.display = 'grid';
-        }
+        picker.style.display = 'grid';
+      }
 
       function hideSetupVenuePicker() {
         const picker = document.getElementById('setup-picker');
         if (picker) picker.style.display = 'none';
       }
 
-     function addSetupVenue(venue) {
+      function addSetupVenue(venue) {
         const hiddenIndex = hiddenResetItems.indexOf(venue);
         if (hiddenIndex !== -1) {
           hiddenResetItems.splice(hiddenIndex, 1);
@@ -928,21 +900,25 @@
 
         updateResetList();
       }
+
       function showCoinBonus() {
         const coin = document.createElement('div');
         coin.className = 'coin-popup';
         coin.innerText = '🪙 +100';
         document.body.appendChild(coin);
 
-        coinSound.currentTime = 0;
-        coinSound.play();
+        try {
+          coinSound.currentTime = 0;
+          coinSound.play().catch(() => {});
+        } catch (e) {}
 
         setTimeout(() => {
           coin.remove();
         }, 1500);
       }
+
       function updateChecklistByDate(dateString) {
-        const day = new Date(dateString).getDay(); 
+        const day = new Date(dateString).getDay();
         const remind = document.getElementById('cloth-remind');
         const text = document.getElementById('cloth-remind-text');
         const isClothDay = [0, 2, 3, 5].includes(day);
@@ -955,7 +931,6 @@
             : '今日はクロスを出さない日です。間違って出していませんか？';
         }
       }
-      
 
       function enterApp() {
         const nameInput = document.getElementById('userName');
@@ -965,39 +940,44 @@
         const name = nameInput.value.trim();
         const dateVal = dateInput.value;
 
-        if (!name || !dateVal) { alert("日付と名前を入力してください"); return; }
+        if (!name || !dateVal) {
+          alert("日付と名前を入力してください");
+          return;
+        }
+
         updateChecklistByDate(dateVal);
         transitionToPage('welcome-page', 'main-page', 'block');
+
         const userDisplay = document.getElementById('user-display');
         if(userDisplay) userDisplay.innerText = "DATE: " + dateVal + " / STAFF: " + name;
         updateResetList();
       }
 
       function removeResetItem(name) {
-  if (baseResetItems.includes(name)) {
-    if (!hiddenResetItems.includes(name)) {
-      hiddenResetItems.push(name);
-    }
-  }
+        if (baseResetItems.includes(name)) {
+          if (!hiddenResetItems.includes(name)) {
+            hiddenResetItems.push(name);
+          }
+        }
 
-  const setupIndex = extraSetupVenues.indexOf(name);
-  if (setupIndex !== -1) {
-    extraSetupVenues.splice(setupIndex, 1);
-  }
+        const setupIndex = extraSetupVenues.indexOf(name);
+        if (setupIndex !== -1) {
+          extraSetupVenues.splice(setupIndex, 1);
+        }
 
-  const usageInput = document.getElementById(`u_${name}`);
-  if (usageInput) {
-    usageInput.checked = false;
-  }
+        const usageInput = document.getElementById(`u_${name}`);
+        if (usageInput) {
+          usageInput.checked = false;
+        }
 
-  updateResetList();
-}
-      
+        updateResetList();
+      }
+
       function updateResetList() {
         const resetSection = document.getElementById('reset-section');
         if(!resetSection) return;
-        const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
 
+        const selected = Array.from(document.querySelectorAll('input[name="usage"]:checked')).map(el => el.value);
         let items = baseResetItems.filter(item => !hiddenResetItems.includes(item));
 
         selected.forEach(v => {
@@ -1007,42 +987,49 @@
         extraSetupVenues.forEach(v => {
           if (!v.includes("エントランス") && !items.includes(v)) items.push(v);
         });
-        const currentVals = {}; 
+
+        const currentVals = {};
         document.querySelectorAll('[id^="slide_"],[id^="comm_"]').forEach(el => currentVals[el.id] = el.value);
-        
+
         resetSection.innerHTML = "";
         items.forEach(name => {
-            const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
-            const labels = resetConfig[key];
-            resetSection.innerHTML += `
-                <div class="card">
-                  <div class="reset-card-title">
-                    <span class="fw-bold">
-                      ● ${name} 
-                      <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span>
-                    </span>
-                    <button type="button" class="trash-btn" onclick="removeResetItem('${name}')">🗑削除</button>
-                  </div>
+          const key = name.includes("控室") ? "控室" : (resetConfig[name] ? name : "default");
+          const labels = resetConfig[key];
+          resetSection.innerHTML += `
+            <div class="card">
+              <div class="reset-card-title">
+                <span class="fw-bold">
+                  ● ${name}
+                  <span id="praise_${name}" style="color:#8e764d; font-style:italic; font-size:0.8rem; display:none; margin-left:10px;">Excellent!</span>
+                </span>
+                <button type="button" class="trash-btn" onclick="removeResetItem('${name}')">🗑</button>
+              </div>
 
-                  <div class="slider-container py-3">
-                        <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;"><span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span></div>
-                        <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
-                    </div>
-                    <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
-                </div>`;
-            setTimeout(() => checkStatus(name), 0);
+              <div class="slider-container py-3">
+                <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;">
+                  <span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span>
+                </div>
+                <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
+              </div>
+              <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
+            </div>`;
+          setTimeout(() => checkStatus(name), 0);
         });
       }
 
       async function finalSubmit() {
         const checks = document.querySelectorAll('#checklist-area input[type="checkbox"]');
-        let allChecked = true; 
+        let allChecked = true;
         checks.forEach(c => { if(c.offsetParent !== null && !c.checked) allChecked = false; });
-        if(!allChecked) { alert("チェックリストをすべて確認してください"); return; }
+        if(!allChecked) {
+          alert("チェックリストをすべて確認してください");
+          return;
+        }
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
         btn.innerText = "SENDING...";
+
         const photoInput = document.getElementById('photoFile');
         let photoData = null;
 
@@ -1060,33 +1047,39 @@
             };
             reader.readAsDataURL(file);
           });
-          }
-        const payload = { 
-            targetDate: document.getElementById('targetDate').value, 
-            userName: document.getElementById('userName').value, 
-            usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"), 
-            resetData: {}, 
-            pickupInfo: document.getElementById('pickupInfo').value, 
-            otherNote: document.getElementById('otherNote').value,
-            photo: photoData
+        }
+
+        const payload = {
+          targetDate: document.getElementById('targetDate').value,
+          userName: document.getElementById('userName').value,
+          usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"),
+          resetData: {},
+          pickupInfo: document.getElementById('pickupInfo').value,
+          otherNote: document.getElementById('otherNote').value,
+          photo: photoData
         };
 
         document.querySelectorAll('#reset-section .card').forEach(card => {
-            const nameSpan = card.querySelector('.fw-bold');
-            if(!nameSpan) return;
-            const name = nameSpan.innerText.split('● ')[1].split(' Excellent!')[0].trim();
-            const val = card.querySelector('input[type="range"]').value;
-            payload.resetData[name] = { status: val == 4 ? "完了" : (val == 0 ? "未着" : "リセット途中"), comment: card.querySelector('textarea').value };
+          const nameSpan = card.querySelector('.fw-bold');
+          if(!nameSpan) return;
+          const name = nameSpan.innerText.split('● ')[1].split(' Excellent!')[0].trim();
+          const val = card.querySelector('input[type="range"]').value;
+          payload.resetData[name] = {
+            status: val == 4 ? "完了" : (val == 0 ? "未着" : "リセット途中"),
+            comment: card.querySelector('textarea').value
+          };
         });
 
         try {
-            await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
-            transitionToPage('main-page', 'ending-page', 'flex');
+          await fetch(GAS_URL, { method: "POST", mode: "no-cors", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(payload) });
+          transitionToPage('main-page', 'ending-page', 'flex');
         } catch (e) {
-            alert("送信エラー: " + e.message);
-            btn.disabled = false; btn.innerText = "報告を送信";
+          alert("送信エラー: " + e.message);
+          btn.disabled = false;
+          btn.innerText = "報告を送信";
         }
       }
+
       function breakBlock(input) {
         const label = input.nextElementSibling;
         if (!label) return;
@@ -1099,6 +1092,7 @@
           label.classList.remove('block-hit');
         }, 800);
       }
+
       function checkStatus(name) {
         const slide = document.getElementById(`slide_${name}`);
         const praise = document.getElementById(`praise_${name}`);
@@ -1121,3 +1115,4 @@
     <div id="iris-transition"></div>
   </body>
 </html>
+
