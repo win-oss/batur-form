@@ -738,9 +738,204 @@
   
 
 }
+
+/* =========================================================
+   BATUR AUTUMN THEME
+   Existing form logic is unchanged. Seasonal visuals only.
+   ========================================================= */
+:root {
+  --pixel-sky: #79bde8;
+  --pixel-green: #a66a35;
+  --pixel-gold: #f2ad32;
+  --pixel-white: #fff4d6;
+  --autumn-red: #c94b32;
+  --autumn-orange: #e8752c;
+  --autumn-yellow: #e9aa35;
+  --autumn-brown: #7a482c;
+}
+
+/* Main form gets a subtle autumn-sky background too */
+#main-page {
+  background:
+    linear-gradient(to bottom, #dceeff 0 150px, #f7ead6 150px 100%);
+}
+
+/* Warm autumn header/buttons while keeping the retro UI */
+.app-header {
+  border-bottom-color: var(--autumn-orange);
+}
+.section-title {
+  border-bottom-color: var(--autumn-orange);
+}
+.card {
+  border-left-color: var(--autumn-orange);
+}
+.fixed-bottom-btn {
+  border-top-color: var(--autumn-orange);
+}
+.btn-batur {
+  background: var(--autumn-yellow);
+}
+.usage-label,
+.usage-btn:checked + .usage-label {
+  background: #df792c;
+}
+
+/* Welcome autumn sky */
+#welcome-page,
+.title-screen {
+  background-color: #72b5e3;
+}
+.title-screen {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='40' viewBox='0 0 96 40' shape-rendering='crispEdges'%3E%3Crect x='16' y='16' width='16' height='8' fill='%23fff8e7'/%3E%3Crect x='32' y='8' width='16' height='16' fill='%23fff8e7'/%3E%3Crect x='48' y='0' width='16' height='24' fill='%23fff8e7'/%3E%3Crect x='64' y='8' width='16' height='16' fill='%23fff8e7'/%3E%3Crect x='80' y='16' width='8' height='8' fill='%23fff8e7'/%3E%3Crect x='24' y='24' width='56' height='8' fill='%23fff8e7'/%3E%3Crect x='40' y='32' width='24' height='8' fill='%23fff8e7'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='40' viewBox='0 0 96 40' shape-rendering='crispEdges'%3E%3Crect x='16' y='16' width='16' height='8' fill='%23fff8e7'/%3E%3Crect x='32' y='8' width='16' height='16' fill='%23fff8e7'/%3E%3Crect x='48' y='0' width='16' height='24' fill='%23fff8e7'/%3E%3Crect x='64' y='8' width='16' height='16' fill='%23fff8e7'/%3E%3Crect x='80' y='16' width='8' height='8' fill='%23fff8e7'/%3E%3Crect x='24' y='24' width='56' height='8' fill='%23fff8e7'/%3E%3Crect x='40' y='32' width='24' height='8' fill='%23fff8e7'/%3E%3C/svg%3E");
+}
+
+/* Autumn mountains */
+.pixel-mountain {
+  background: #d45a32;
+}
+.pixel-mountain::before {
+  background: #9e3f2c;
+  box-shadow: 22px 10px 0 #e58a2f, -8px 24px 0 #b9482e;
+}
+.pixel-mountain::after {
+  background: #f0b13a;
+  box-shadow: -14px 24px 0 #df6d2d, 18px 34px 0 #f0b13a;
+}
+.mountain-right {
+  background: #e47a30;
+}
+
+/* Replace the sunflower artwork with pixel maple trees.
+   Class names stay unchanged so the original HTML structure remains safe. */
+.pixel-sunflower {
+  width: 48px;
+  height: 70px;
+}
+.pixel-sunflower::before {
+  left: 20px;
+  bottom: 0;
+  width: 8px;
+  height: 35px;
+  background: #754229;
+  box-shadow:
+    -7px 10px 0 #754229,
+    7px 13px 0 #754229;
+}
+.pixel-sunflower::after {
+  left: 15px;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  background: #c8442d;
+  box-shadow:
+    -12px 4px 0 #e46f2c,
+    12px 4px 0 #e7a12f,
+    -6px -10px 0 #d6502d,
+    7px -9px 0 #f0ad34,
+    -14px 17px 0 #b93c2e,
+    14px 17px 0 #df672d,
+    0 16px 0 #d94f2d;
+}
+.sunflower-left { left: 125px; }
+.sunflower-right { right: 120px; transform: scale(.9); }
+
+/* Autumn ground */
+.pixel-ground {
+  background:
+    linear-gradient(#2b2b2b 0 0) 0 0 / 100% 4px no-repeat,
+    repeating-linear-gradient(90deg, #8b512e 0 24px, #b96a32 24px 48px);
+}
+.pixel-ground::after {
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 48 48' xmlns='http://www.w3.org/2000/svg' shape-rendering='crispEdges'%3E%3Cpath d='M0 16 H48 M0 32 H48 M24 0 V16 M12 16 V32 M36 16 V32 M24 32 V48' stroke='%236f3b25' stroke-width='3'/%3E%3Crect x='5' y='7' width='5' height='5' fill='%23e0782d'/%3E%3Crect x='34' y='24' width='6' height='4' fill='%23d04b2f'/%3E%3C/svg%3E");
+}
+
+/* Ending page also becomes autumn */
+#ending-page {
+  background:
+    radial-gradient(circle at 18% 18%, #fff8e7 0 18px, transparent 19px),
+    radial-gradient(circle at 25% 18%, #fff8e7 0 22px, transparent 23px),
+    radial-gradient(circle at 32% 18%, #fff8e7 0 18px, transparent 19px),
+    radial-gradient(circle at 68% 28%, #fff8e7 0 16px, transparent 17px),
+    radial-gradient(circle at 74% 28%, #fff8e7 0 21px, transparent 22px),
+    radial-gradient(circle at 80% 28%, #fff8e7 0 16px, transparent 17px),
+    linear-gradient(to bottom, #79bde8 0%, #cce7f4 68%, #a86735 68%, #80502f 100%);
+}
+.ending-stage {
+  background:
+    linear-gradient(to bottom, transparent 0%, transparent 68%, #a86735 68%, #80502f 100%);
+}
+.ending-ground {
+  background:
+    repeating-linear-gradient(90deg, #a86735 0 20px, #8d552f 20px 40px);
+}
+
+/* Falling pixel-maple layer across all three pages */
+.autumn-leaves {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 900;
+}
+.autumn-leaf {
+  position: absolute;
+  top: -40px;
+  width: 16px;
+  height: 16px;
+  opacity: .88;
+  image-rendering: pixelated;
+  background: currentColor;
+  clip-path: polygon(
+    44% 0%,56% 0%,58% 25%,78% 10%,72% 34%,100% 32%,
+    78% 51%,94% 62%,65% 65%,69% 94%,53% 76%,50% 100%,
+    47% 76%,31% 94%,35% 65%,6% 62%,22% 51%,0% 32%,
+    28% 34%,22% 10%,42% 25%
+  );
+  filter: drop-shadow(2px 2px 0 rgba(43,43,43,.2));
+  animation:
+    mapleFall var(--fall-duration) linear infinite,
+    mapleSway var(--sway-duration) ease-in-out infinite alternate,
+    mapleSpin var(--spin-duration) steps(8) infinite;
+  animation-delay: var(--delay), var(--delay), var(--delay);
+}
+@keyframes mapleFall {
+  from { top: -40px; }
+  to { top: 108vh; }
+}
+@keyframes mapleSway {
+  from { margin-left: -28px; }
+  to { margin-left: 34px; }
+}
+@keyframes mapleSpin {
+  from { rotate: 0deg; }
+  to { rotate: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .autumn-leaf { display: none; }
+}
+
 </style>
   </head>
     <body>
+
+    <!-- 秋の落ち葉演出 -->
+    <div class="autumn-leaves" aria-hidden="true">
+      <i class="autumn-leaf" style="left:4%;color:#c94b32;--fall-duration:11s;--sway-duration:2.8s;--spin-duration:4.4s;--delay:-2s"></i>
+      <i class="autumn-leaf" style="left:13%;color:#e8752c;--fall-duration:14s;--sway-duration:3.5s;--spin-duration:5.2s;--delay:-9s;transform:scale(.7)"></i>
+      <i class="autumn-leaf" style="left:23%;color:#e9aa35;--fall-duration:12s;--sway-duration:2.7s;--spin-duration:4.7s;--delay:-5s;transform:scale(.85)"></i>
+      <i class="autumn-leaf" style="left:34%;color:#b83d30;--fall-duration:15s;--sway-duration:4s;--spin-duration:6s;--delay:-12s;transform:scale(.65)"></i>
+      <i class="autumn-leaf" style="left:46%;color:#dd622c;--fall-duration:10s;--sway-duration:3.1s;--spin-duration:4.1s;--delay:-7s"></i>
+      <i class="autumn-leaf" style="left:57%;color:#f0a936;--fall-duration:13s;--sway-duration:3.7s;--spin-duration:5.5s;--delay:-1s;transform:scale(.75)"></i>
+      <i class="autumn-leaf" style="left:68%;color:#c74730;--fall-duration:11.5s;--sway-duration:2.9s;--spin-duration:4.6s;--delay:-8s;transform:scale(.9)"></i>
+      <i class="autumn-leaf" style="left:78%;color:#df752c;--fall-duration:14.5s;--sway-duration:3.3s;--spin-duration:5.8s;--delay:-4s;transform:scale(.7)"></i>
+      <i class="autumn-leaf" style="left:88%;color:#b63b30;--fall-duration:12.5s;--sway-duration:2.6s;--spin-duration:4.9s;--delay:-10s"></i>
+      <i class="autumn-leaf" style="left:96%;color:#e5a331;--fall-duration:16s;--sway-duration:4.2s;--spin-duration:6.2s;--delay:-6s;transform:scale(.65)"></i>
+    </div>
+
 
     <!-- ページ1: ウェルカム -->
     <div id="welcome-page" class="page" style="display: flex;">
@@ -770,7 +965,7 @@
         <div class="pixel-sunflower sunflower-left"></div>
         <div class="pixel-sunflower sunflower-right"></div>
         <div class="title-runner">
-          <span class="runner-bubble">涼しくなってきましたね🍁</span>
+          <span class="runner-bubble">秋ですね🍁 今日もお疲れさまです！</span>
         </div>
         <div class="pixel-ground"></div>
       </div>
@@ -1172,4 +1367,3 @@
     <div id="iris-transition"></div>
   </body>
 </html>
-
