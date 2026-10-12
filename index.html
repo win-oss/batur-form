@@ -1011,27 +1011,27 @@
       <div class="text-center mt-2" style="font-size:0.65rem; color:#999;" id="syncStatus">SYSTEM READY</div>
 
       <div class="section-title">使用した会場 / VENUE</div>
-       <p class="section-help">当日使用した会場を選択してください。複数選択できます。</p>
+       <p class="section-help">本日使用した会場・入口を選択してください。複数選択できます。</p>
       <div class="grid-usage d-grid px-2" style="grid-template-columns: 1fr 1fr; gap: 10px;" id="usage-grid"></div>
 
       <div class="section-title">リセット状況 / RESET STATUS</div>
-       <p class="section-help">各会場の進捗をスライダーで選び、必要に応じて詳細を記入してください。エントランスも報告できます。</p>
+       <p class="section-help">各会場・場所のリセット状況およびセッティングの進捗を報告してください。また、共有しておきたいこと等があれば、必要に応じて詳細を記入してください。</p>
       <div id="reset-section"></div>
 
       <div class="card setup-add-card">
-        <p class="field-help">使用会場以外のリセット状況を報告する場合はこちら。</p>
+        <p class="field-help">その他の場所のセッティング状況を報告する場合はこちらから追加できます。</p>
          <button type="button" class="btn btn-batur" onclick="showSetupVenuePicker()">＋ 会場・項目を追加</button>
         <div id="setup-picker" class="setup-picker" style="display:none;"></div>
       </div>
 
       <div class="section-title">その他 / OTHERS</div>
-       <p class="section-help">次の担当者に伝える連絡事項や注意点を記入してください。</p>
+       <p class="section-help">その他伝えたいこと(シルバー仕込みの進捗や細かい指示の未着事項など)や共有したい注意点など記入してください。</p>
       <div class="card">
         <textarea id="otherNote" class="form-control" rows="3" placeholder="特記事項"></textarea>
       </div>
 
       <div class="section-title">締めチェック / CLOSING CHECKLIST</div>
-       <p class="section-help">現場を一通り巡回してから、各項目を確認してください。</p>
+       <p class="section-help">必ず現場を巡回しながら、各項目を確認してください。</p>
       <div class="card" id="checklist-area">
         <div id="cloth-remind" style="display:none;" class="check-item special-remind">
           <input type="checkbox" id="c3"><span id="cloth-remind-text">今日はクロスを出す日です！出しましたか？</span>
