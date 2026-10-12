@@ -918,6 +918,34 @@
   .autumn-leaf { display: none; }
 }
 
+
+/* Responsive form improvements: retain existing pixel-art theme */
+.section-help {margin:0 16px 14px; color:#5e5043; font-size:.82rem; line-height:1.6;}
+.field-help {font-size:.77rem; color:#716455; margin:0 0 8px; line-height:1.5;}
+#main-page {overflow-x:hidden;}
+#usage-grid {grid-template-columns:repeat(3,minmax(0,84px)) !important; gap:10px !important; justify-content:center;}
+#usage-grid > div, #usage-grid .usage-label {min-width:0;}
+@media (min-width: 768px) {
+  #main-page {padding-left:max(20px,calc((100vw - 1160px)/2)); padding-right:max(20px,calc((100vw - 1160px)/2));}
+  #main-page .app-header {margin-left:-20px;margin-right:-20px;}
+  #usage-grid {grid-template-columns:repeat(5,minmax(0,1fr)) !important; max-width:900px; margin:0 auto 20px;}
+  #usage-grid .usage-label {width:100%; height:90px;}
+  #reset-section {display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px 12px;}
+  #reset-section .card {min-width:0;}
+  #main-page .card {margin-left:10px;margin-right:10px;}
+  .fixed-bottom-btn {left:50%;right:auto;transform:translateX(-50%);width:min(100%,1160px);}
+}
+@media (min-width:1100px) {#usage-grid {grid-template-columns:repeat(5,minmax(0,1fr)) !important;}}
+@media (max-width:359px) {#usage-grid {grid-template-columns:repeat(3,minmax(0,1fr)) !important;} #usage-grid .usage-label {width:100%;height:80px;} .usage-label .venue-name {font-size:.85rem;}}
+/* Keep the brick artwork proportional and the pixel borders intact */
+#usage-grid .usage-label {box-sizing:border-box; width:100%; aspect-ratio:1 / 1; height:auto; min-height:84px; border:3px solid #2b2b2b; box-shadow:3px 3px 0 #2b2b2b; overflow:hidden;}
+#usage-grid .usage-label::after {background-size:100% 100%; inset:0;}
+#usage-grid .venue-name {font-size:clamp(.72rem,1.3vw,1rem); line-height:1.15; overflow-wrap:anywhere; text-shadow:none; padding:0 3px;}
+@media (min-width:768px) {#usage-grid {max-width:760px;} #usage-grid .usage-label {height:auto;min-height:0;}}
+@media (max-width:767px) {#usage-grid .venue-name {font-size:.85rem;}}
+@media (max-width:359px) {#usage-grid .venue-name {font-size:.72rem;}}
+
+
 </style>
   </head>
     <body>
@@ -983,28 +1011,27 @@
       <div class="text-center mt-2" style="font-size:0.65rem; color:#999;" id="syncStatus">SYSTEM READY</div>
 
       <div class="section-title">使用した会場 / VENUE</div>
+       <p class="section-help">当日使用した会場を選択してください。複数選択できます。</p>
       <div class="grid-usage d-grid px-2" style="grid-template-columns: 1fr 1fr; gap: 10px;" id="usage-grid"></div>
 
       <div class="section-title">リセット状況 / RESET STATUS</div>
+       <p class="section-help">各会場の進捗をスライダーで選び、必要に応じて詳細を記入してください。エントランスも報告できます。</p>
       <div id="reset-section"></div>
 
       <div class="card setup-add-card">
-        <button type="button" class="btn btn-batur" onclick="showSetupVenuePicker()">＋ 会場・項目を追加</button>
+        <p class="field-help">使用会場以外のリセット状況を報告する場合はこちら。</p>
+         <button type="button" class="btn btn-batur" onclick="showSetupVenuePicker()">＋ 会場・項目を追加</button>
         <div id="setup-picker" class="setup-picker" style="display:none;"></div>
       </div>
 
-      <div class="section-title">集荷・写真 / PICKUP & PHOTO</div>
-      <div class="card">
-        <textarea id="pickupInfo" class="form-control mb-3" rows="2" placeholder="集荷詳細"></textarea>
-        <input type="file" id="photoFile" class="form-control" accept="image/*">
-      </div>
-
       <div class="section-title">その他 / OTHERS</div>
+       <p class="section-help">次の担当者に伝える連絡事項や注意点を記入してください。</p>
       <div class="card">
         <textarea id="otherNote" class="form-control" rows="3" placeholder="特記事項"></textarea>
       </div>
 
       <div class="section-title">締めチェック / CLOSING CHECKLIST</div>
+       <p class="section-help">現場を一通り巡回してから、各項目を確認してください。</p>
       <div class="card" id="checklist-area">
         <div id="cloth-remind" style="display:none;" class="check-item special-remind">
           <input type="checkbox" id="c3"><span id="cloth-remind-text">今日はクロスを出す日です！出しましたか？</span>
@@ -1233,11 +1260,11 @@
         let items = baseResetItems.filter(item => !hiddenResetItems.includes(item));
 
         selected.forEach(v => {
-          if (!v.includes("エントランス") && !items.includes(v)) items.push(v);
+          if (!items.includes(v)) items.push(v);
         });
 
         extraSetupVenues.forEach(v => {
-          if (!v.includes("エントランス") && !items.includes(v)) items.push(v);
+          if (!items.includes(v)) items.push(v);
         });
 
         const currentVals = {};
@@ -1263,6 +1290,7 @@
                 </div>
                 <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
               </div>
+              <p class="field-help">作業途中の場合や、次の担当者への補足を入力できます。</p>
               <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
             </div>`;
           setTimeout(() => checkStatus(name), 0);
@@ -1282,33 +1310,14 @@
         btn.disabled = true;
         btn.innerText = "SENDING...";
 
-        const photoInput = document.getElementById('photoFile');
-        let photoData = null;
-
-        if (photoInput.files.length > 0) {
-          const file = photoInput.files[0];
-
-          photoData = await new Promise((resolve) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-              resolve({
-                name: file.name,
-                type: file.type,
-                data: reader.result
-              });
-            };
-            reader.readAsDataURL(file);
-          });
-        }
-
         const payload = {
           targetDate: document.getElementById('targetDate').value,
           userName: document.getElementById('userName').value,
           usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"),
           resetData: {},
-          pickupInfo: document.getElementById('pickupInfo').value,
+          pickupInfo: "",
           otherNote: document.getElementById('otherNote').value,
-          photo: photoData
+          photo: null
         };
 
         document.querySelectorAll('#reset-section .card').forEach(card => {
