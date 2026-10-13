@@ -1050,7 +1050,7 @@
         <div class="pixel-sunflower sunflower-left"></div>
         <div class="pixel-sunflower sunflower-right"></div>
         <div class="title-runner">
-          <span class="runner-bubble">秋ですね🍁 今日もお疲れさまです！</span>
+          <span class="runner-bubble">秋ですね🍁</span>
         </div>
         <div class="pixel-ground"></div>
       </div>
@@ -1072,7 +1072,7 @@
       <div class="grid-usage d-grid px-2" style="grid-template-columns: 1fr 1fr; gap: 10px;" id="usage-grid"></div>
 
       <div class="section-title">リセット状況 / RESET STATUS</div>
-       <p class="section-help">各会場のリセット状況およびセッティングの進捗を報告してください。曖昧ではなく、明日作業に入る人がわかりやすい報告をお願いします（詳細は各メモ欄に記入してください）</p>
+       <p class="section-help">各会場のリセット状況およびセッティングの進捗を報告してください。曖昧ではなく、明日作業に入る人がわかりやすい報告をお願いします。（詳細は各メモ欄に記入してください）</p>
       <div id="reset-section"></div>
 
       <div class="card setup-add-card">
@@ -1082,7 +1082,7 @@
       </div>
 
       <div class="section-title">その他 / OTHERS</div>
-       <p class="section-help">その他、シルバーの進捗や清掃、その他お願いされた仕事の進捗状況などがあればご記入ください。</p>
+       <p class="section-help">シルバーの進捗や清掃、その他お願いされた仕事の進捗状況などがあればご記入ください。</p>
       <div class="card">
         <textarea id="otherNote" class="form-control" rows="3" placeholder="特記事項"></textarea>
       </div>
@@ -1093,14 +1093,14 @@
         <div id="cloth-remind" style="display:none;" class="check-item special-remind">
           <input type="checkbox" id="c3"><span id="cloth-remind-text">今日はクロスを出す日です！出しましたか？</span>
         </div>
-        <div class="check-item"><input type="checkbox" id="c_elec"><span>各会場の電気、ガスOFF</span></div>
-        <div class="check-item"><input type="checkbox" id="c_kitchen"><span>キッチンスペースにホールの備品が散らかってないか</span></div>
-        <div class="check-item"><input type="checkbox" id="c1"><span>ゴミ出し、袋設置</span></div>
-        <div class="check-item"><input type="checkbox" id="c2"><span>(大皿利用時)白手を洗いましたか？</span></div>
-        <div class="check-item"><input type="checkbox" id="c4"><span>日付シールはすべて貼れていますか</span></div>
-        <div class="check-item"><input type="checkbox" id="c5"><span>コーヒーマシンの清掃</span></div>
-        <div class="check-item"><input type="checkbox" id="c6"><span>飲み残し、食べ残しはありませんか</span></div>
-        <div class="check-item"><input type="checkbox" id="c7"><span>引き継ぎに漏れ等はありませんか（清掃忘れ等）</span></div>
+        <div class="check-item"><input type="checkbox" id="c_elec"><span>各会場の電気、ガスを切った</span></div>
+        <div class="check-item"><input type="checkbox" id="c_kitchen"><span>キッチンスペースにホールの備品が散らかっていない</span></div>
+        <div class="check-item"><input type="checkbox" id="c1"><span>ゴミ出し、袋設置をした</span></div>
+        <div class="check-item"><input type="checkbox" id="c2"><span>(大皿利用時)白手を洗った</span></div>
+        <div class="check-item"><input type="checkbox" id="c4"><span>日付シールはすべて貼れている</span></div>
+        <div class="check-item"><input type="checkbox" id="c5"><span>コーヒーマシンの清掃をした</span></div>
+        <div class="check-item"><input type="checkbox" id="c6"><span>飲み残し、食べ残しはない</span></div>
+        <div class="check-item"><input type="checkbox" id="c7"><span>引き継ぎに漏れ等はない（清掃忘れ等）</span></div>
       </div>
 
       <div class="fixed-bottom-btn"><button class="btn btn-batur w-100" id="submitBtn">報告を送信</button></div>
@@ -1420,7 +1420,7 @@
           resetData: {},
           pickupInfo: "",
           operationStatus: operationStatus,
-          otherNote: '【営業区分】' + operationStatus + '\n' + document.getElementById('otherNote').value,
+          otherNote: document.getElementById('otherNote').value,
           photo: null
         };
 
