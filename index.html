@@ -946,6 +946,52 @@
 @media (max-width:359px) {#usage-grid .venue-name {font-size:.72rem;}}
 
 
+
+/* Completion confirmation dialog */
+.complete-overlay { position:fixed; inset:0; z-index:10020; background:rgba(20,20,20,.68); display:none; align-items:center; justify-content:center; padding:18px; }
+.complete-overlay.is-open { display:flex; }
+.complete-dialog { width:min(100%,460px); background:#fff4d6; border:4px solid #2b2b2b; box-shadow:7px 7px 0 #2b2b2b; padding:22px; color:#2b2b2b; }
+.complete-dialog h2 { font-size:1.1rem; font-weight:bold; text-align:center; margin-bottom:16px; }
+.complete-dialog p { font-size:.9rem; line-height:1.8; }
+.complete-actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; }
+.complete-actions button { border:3px solid #2b2b2b; padding:12px 5px; font-weight:bold; background:#fff; }
+.complete-actions .complete-yes { background:#f2ad32; }
+@media(max-width:420px) { .complete-dialog { padding:16px; } .complete-actions { gap:8px; } }
+.complete-dialog { max-height:calc(100dvh - 36px); overflow-y:auto; }
+.completion-checkpoints { margin:14px 0; padding:12px; border:2px solid #2b2b2b; background:#fff9e9; }
+.completion-checkpoints[hidden] { display:none; }
+.completion-checkpoints h3 { font-size:.9rem; font-weight:bold; margin-bottom:10px; }
+.completion-check-item { display:flex; align-items:flex-start; gap:10px; margin:10px 0; font-size:.85rem; line-height:1.5; cursor:pointer; }
+.completion-check-item input { flex:0 0 auto; width:19px; height:19px; margin-top:2px; accent-color:#4a3d33; }
+.complete-yes:disabled { opacity:.45; cursor:not-allowed; }
+
+/* 営業区分 */
+.operation-card { margin-top:12px; }
+.operation-choice { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+.operation-choice label { display:flex; align-items:center; gap:7px; cursor:pointer; padding:10px 12px; border:2px solid #2b2b2b; background:#fff9e9; flex:1; min-width:140px; }
+.operation-choice input { accent-color:#2b2b2b; }
+.operation-note { font-size:.8rem; margin:10px 0 0; }
+
+/* スタート画面: 余白を確保し、説明は選択中のみ表示 */
+.start-panel { width:min(92vw, 620px); max-width:620px; }
+.start-operation-title { color:#fff; font-size:.9rem; text-align:center; margin:16px 0 10px; text-shadow:2px 2px #2b2b2b; }
+.start-operation-card { background:transparent; border:0; box-shadow:none; padding:0; margin:0 0 22px; color:#2b2b2b; }
+.start-operation-card .operation-choice { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:0 0 12px; }
+.start-operation-card .operation-choice label { display:flex; justify-content:center; align-items:center; min-width:0; min-height:58px; padding:12px 8px; font-size:1rem; font-weight:700; border:3px solid #2b2b2b; box-shadow:4px 4px #2b2b2b; background:#fff9e9; cursor:pointer; }
+.start-operation-card .operation-choice label:has(input:checked) { background:#f6d99b; }
+.start-operation-card .operation-choice label:has(input:disabled) { cursor:default; }
+.start-operation-card .operation-choice label:has(input:disabled:not(:checked)) { opacity:.55; }
+.start-operation-card .operation-choice input { margin:0 7px 0 0; flex-shrink:0; }
+.start-operation-description { background:#fff4d6; border:3px solid #2b2b2b; box-shadow:4px 4px #2b2b2b; padding:16px 18px; line-height:1.75; font-size:.92rem; }
+.start-operation-description strong { display:block; margin-bottom:5px; }
+.start-operation-card .operation-note { font-size:.75rem; margin:10px 2px 0; line-height:1.6; color:#fff; text-shadow:1px 1px #2b2b2b; }
+@media(max-width:480px) {
+  .start-panel { width:min(92vw, 400px); }
+  .start-operation-card .operation-choice { gap:8px; }
+  .start-operation-card .operation-choice label { min-height:54px; font-size:.85rem; padding:9px 5px; }
+  .start-operation-description { padding:13px 14px; font-size:.84rem; }
+  .title-screen { justify-content:center; }
+}
 </style>
   </head>
     <body>
@@ -984,6 +1030,17 @@
         <div class="start-panel">
           <input type="date" id="targetDate" class="form-control text-center mb-2">
           <input type="text" id="userName" class="form-control text-center mb-3" placeholder="NAME">
+          <div class="start-operation-title">引き継ぎの状況 / HANDOVER STATUS</div>
+          <div class="start-operation-card operation-card">
+        <div id="operation-choices" class="operation-choice">
+          <label><input type="radio" name="operationStatus" value="営業中">営業中</label>
+          <label><input type="radio" name="operationStatus" value="営業終了後">営業終了後</label>
+        </div>
+        <div id="operation-description" class="start-operation-description" aria-live="polite"></div>
+        <p id="operation-note" class="operation-note" aria-live="polite"></p>
+          </div>
+
+
           <button type="button" class="btn btn-batur" id="enterBtn">START</button>
         </div>
 
@@ -1011,27 +1068,27 @@
       <div class="text-center mt-2" style="font-size:0.65rem; color:#999;" id="syncStatus">SYSTEM READY</div>
 
       <div class="section-title">使用した会場 / VENUE</div>
-       <p class="section-help">本日使用した会場・入口を選択してください。複数選択できます。</p>
+       <p class="section-help">当日使用した会場を選択してください。複数選択できます。</p>
       <div class="grid-usage d-grid px-2" style="grid-template-columns: 1fr 1fr; gap: 10px;" id="usage-grid"></div>
 
       <div class="section-title">リセット状況 / RESET STATUS</div>
-       <p class="section-help">各会場・場所のリセット状況およびセッティングの進捗を報告してください。また、共有しておきたいこと等があれば、必要に応じて詳細を記入してください。</p>
+       <p class="section-help">各会場のリセット状況およびセッティングの進捗を報告してください。曖昧ではなく、明日作業に入る人がわかりやすい報告をお願いします（詳細は各メモ欄に記入してください）</p>
       <div id="reset-section"></div>
 
       <div class="card setup-add-card">
-        <p class="field-help">その他の場所のセッティング状況を報告する場合はこちらから追加できます。</p>
+        <p class="field-help">その他報告したい会場がある場合はこちらから</p>
          <button type="button" class="btn btn-batur" onclick="showSetupVenuePicker()">＋ 会場・項目を追加</button>
         <div id="setup-picker" class="setup-picker" style="display:none;"></div>
       </div>
 
       <div class="section-title">その他 / OTHERS</div>
-       <p class="section-help">その他伝えたいこと(シルバー仕込みの進捗や細かい指示の未着事項など)や共有したい注意点など記入してください。</p>
+       <p class="section-help">その他、シルバーの進捗や清掃、その他お願いされた仕事の進捗状況などがあればご記入ください。</p>
       <div class="card">
         <textarea id="otherNote" class="form-control" rows="3" placeholder="特記事項"></textarea>
       </div>
 
       <div class="section-title">締めチェック / CLOSING CHECKLIST</div>
-       <p class="section-help">必ず現場を巡回しながら、各項目を確認してください。</p>
+       <p class="section-help">現場を必ず巡回してから、各チェックリスト項目を確認してください。</p>
       <div class="card" id="checklist-area">
         <div id="cloth-remind" style="display:none;" class="check-item special-remind">
           <input type="checkbox" id="c3"><span id="cloth-remind-text">今日はクロスを出す日です！出しましたか？</span>
@@ -1039,7 +1096,7 @@
         <div class="check-item"><input type="checkbox" id="c_elec"><span>各会場の電気、ガスOFF</span></div>
         <div class="check-item"><input type="checkbox" id="c_kitchen"><span>キッチンスペースにホールの備品が散らかってないか</span></div>
         <div class="check-item"><input type="checkbox" id="c1"><span>ゴミ出し、袋設置</span></div>
-        <div class="check-item"><input type="checkbox" id="c2"><span>（大皿利用時）白手</span></div>
+        <div class="check-item"><input type="checkbox" id="c2"><span>(大皿利用時)白手を洗いましたか？</span></div>
         <div class="check-item"><input type="checkbox" id="c4"><span>日付シールはすべて貼れていますか</span></div>
         <div class="check-item"><input type="checkbox" id="c5"><span>コーヒーマシンの清掃</span></div>
         <div class="check-item"><input type="checkbox" id="c6"><span>飲み残し、食べ残しはありませんか</span></div>
@@ -1066,7 +1123,6 @@
         </div>
       </div>
     </div>
-
     <script>
       const GAS_URL = "https://script.google.com/macros/s/AKfycbwtDjSvwmxwt6c63BFdCGrUzys4qYvwH_DAE_GFgZTu13VwtPADmlpnbUXxG58Y7XxD/exec";
       const venues = ["メイン", "ヴィラ", "ヴィラエントランス", "メインエントランス", "チャペル", "控室①", "控室②", "控室③", "サロン"];
@@ -1084,6 +1140,8 @@
       const extraSetupVenues = [];
       const coinSound = new Audio('coin.mp3');
       const bonusTriggered = {};
+      const confirmedCompletion = {};
+      let pendingCompletion = null;
 
       window.onload = function() {
         const dateInput = document.getElementById('targetDate');
@@ -1103,6 +1161,7 @@
           });
         }
         updateResetList();
+        updateOperationStatus();
 
         document.getElementById('enterBtn').addEventListener('click', enterApp);
         document.getElementById('submitBtn').addEventListener('click', finalSubmit);
@@ -1224,6 +1283,7 @@
           return;
         }
 
+        updateOperationStatus();
         updateChecklistByDate(dateVal);
         transitionToPage('welcome-page', 'main-page', 'block');
 
@@ -1288,16 +1348,55 @@
                 <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:#aaa; margin-bottom:10px;">
                   <span>${labels[0]}</span><span>${labels[1]}</span><span>${labels[2]}</span>
                 </div>
-                <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="checkStatus('${name}')">
+                <input type="range" class="form-range" min="0" max="4" step="1" value="${currentVals['slide_'+name] || 0}" id="slide_${name}" oninput="handleResetInput('${name}')">
               </div>
-              <p class="field-help">作業途中の場合や、次の担当者への補足を入力できます。</p>
+              <p class="field-help"></p>
               <textarea class="form-control" id="comm_${name}" rows="1" placeholder="進捗の詳細" style="font-size:0.8rem;">${currentVals['comm_'+name] || ''}</textarea>
             </div>`;
           setTimeout(() => checkStatus(name), 0);
         });
       }
 
+      // フォームを開いた瞬間の日本時間で営業区分を固定する。
+      const openedTokyoTime = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Tokyo', hour: '2-digit', minute: '2-digit', hourCycle: 'h23'
+      }).format(new Date());
+      const [openedHour, openedMinute] = openedTokyoTime.split(':').map(Number);
+      const openedAfter2130 = (openedHour * 60 + openedMinute >= 21 * 60 + 30) || (openedHour * 60 + openedMinute < 10 * 60);
+
+      function getOperationStatus() {
+        if (openedAfter2130) return '営業終了後';
+        return document.querySelector('input[name="operationStatus"]:checked')?.value || '';
+      }
+
+      function updateOperationStatus() {
+        const choices = document.getElementById('operation-choices');
+        const note = document.getElementById('operation-note');
+        const description = document.getElementById('operation-description');
+        if (!choices || !note || !description) return;
+        choices.querySelectorAll('input').forEach(input => {
+          input.disabled = openedAfter2130;
+          if (openedAfter2130) input.checked = input.value === '営業終了後';
+          else if (!choices.querySelector('input:checked')) input.checked = input.value === '営業中';
+        });
+        const updateDescription = () => {
+          const current = getOperationStatus();
+          description.innerHTML = current === '営業中'
+            ? '<strong>現在の状況を引き継ぐ</strong>施錠などの閉店作業は行わず、現段階でのリセット状況や作業の進捗を、次の担当者へ引き継ぐための報告です。'
+            : '<strong>営業終了後の状況を報告</strong>営業終了後のリセット・締め作業の状況を報告します。';
+        };
+        choices.querySelectorAll('input').forEach(input => input.addEventListener('change', updateDescription));
+        updateDescription();
+        note.textContent = openedAfter2130
+          ? '21:30〜翌9:59は営業終了後の報告に固定されます。'
+          : '';
+      }
       async function finalSubmit() {
+        const operationStatus = getOperationStatus();
+        if (!operationStatus) {
+          alert('営業区分を選択してください');
+          return;
+        }
         const checks = document.querySelectorAll('#checklist-area input[type="checkbox"]');
         let allChecked = true;
         checks.forEach(c => { if(c.offsetParent !== null && !c.checked) allChecked = false; });
@@ -1305,6 +1404,10 @@
           alert("チェックリストをすべて確認してください");
           return;
         }
+
+        const unconfirmed = Array.from(document.querySelectorAll('#reset-section input[type="range"]'))
+          .some(slide => slide.value === '4' && !confirmedCompletion[slide.id.slice(6)]);
+        if (unconfirmed) { alert('完了の確認が済んでいない会場があります。'); return; }
 
         const btn = document.getElementById('submitBtn');
         btn.disabled = true;
@@ -1316,7 +1419,8 @@
           usage: venues.map(v => document.getElementById(`u_${v}`).checked ? "有" : "無"),
           resetData: {},
           pickupInfo: "",
-          otherNote: document.getElementById('otherNote').value,
+          operationStatus: operationStatus,
+          otherNote: '【営業区分】' + operationStatus + '\n' + document.getElementById('otherNote').value,
           photo: null
         };
 
@@ -1354,12 +1458,158 @@
         }, 800);
       }
 
+
+      // 同一フォーム内で一度確認した2Fトイレは、他の控室で再確認しない。
+      let secondFloorToiletChecked = false;
+      let pendingSecondFloorToiletChecked = false;
+
+      const completionCheckpoints = {
+        "1Fトイレ": [
+          "備品の補充は適切に行われていますか？",
+          "便器内のブラシがけは行われていますか？"
+        ],
+        "喫煙所": [
+          "ダイソン扇風機の電源は切れていますか？",
+          "エアコンは切れていますか？",
+          "喫煙所看板の電気は消えていますか？"
+        ],
+        "メイン": [
+          "レイアウト通りに作成されていますか？",
+          "バーカウンターの電気は消えていますか？",
+          "清掃用具が散らかっていませんか？"
+        ],
+        "ヴィラエントランス": {
+          common: [
+            "受付のエアコンは消えていますか？",
+            "終了した施工のウェルカムボードが残っていませんか？"
+          ],
+          closed: [
+            "施錠を確認しましたか？",
+            "来館者への案内看板はしまってありますか？"
+          ]
+        },
+        "メインエントランス": {
+          common: [
+            "受付台の受話器と看板は元に戻っていますか？",
+            "終了した施工のウェルカムボードが残っていませんか？"
+          ],
+          closed: [
+            "施錠を確認しましたか？",
+            "間接照明は消しましたか？"
+          ]
+        },
+        "控室": [
+          "電気・エアコンは消しましたか？",
+          "各備品は補充されていますか？",
+          "鏡は磨きましたか？"
+        ],
+        "チャペル": [
+          "レイアウト通りに作っていますか？",
+          "電気・エアコンは消しましたか？",
+          "飲食ありの場合、バーの準備は整っていますか？"
+        ],
+        "ヴィラ": [
+          "レイアウト通りに作っていますか？",
+          "電気・エアコンは消しましたか？",
+          "飲食ありの場合、バーの準備は整っていますか？"
+        ],
+        "サロン": [
+          "鏡は磨きましたか？",
+          "ゴミはすべて回収していますか？",
+          "電子レンジの中はきれいですか？",
+          "空気清浄機の水は補充されていますか？",
+          "コードが散らかっていませんか？"
+        ]
+      };
+
+      function getCompletionQuestions(name) {
+        const key = name.startsWith('控室') ? '控室' : name;
+        const config = completionCheckpoints[key] || [];
+        let questions = Array.isArray(config)
+          ? [...config]
+          : [...config.common, ...(getOperationStatus() === '営業終了後' ? config.closed : [])];
+        if (key === '控室' && !secondFloorToiletChecked) {
+          questions.push('2Fトイレも掃除しましたか？');
+        }
+        return questions;
+      }
+
+      function showCompletionCheckpoints(name) {
+        const container = document.getElementById('complete-checkpoints');
+        const questions = getCompletionQuestions(name);
+        container.replaceChildren();
+        container.hidden = questions.length === 0;
+        if (!questions.length) return;
+        const heading = document.createElement('h3');
+        heading.textContent = '忘れやすいポイント';
+        container.appendChild(heading);
+        questions.forEach((question, index) => {
+          const label = document.createElement('label');
+          label.className = 'completion-check-item';
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.className = 'completion-point-check';
+          if (question === '2Fトイレも掃除しましたか？') checkbox.dataset.secondFloorToilet = 'true';
+          checkbox.addEventListener('change', updateCompletionButton);
+          const span = document.createElement('span');
+          span.textContent = question;
+          label.append(checkbox, span);
+          container.appendChild(label);
+        });
+        updateCompletionButton();
+      }
+
+      function updateCompletionButton() {
+        const boxes = Array.from(document.querySelectorAll('#complete-checkpoints .completion-point-check'));
+        document.querySelector('#complete-overlay .complete-yes').disabled = boxes.some(box => !box.checked);
+      }
+
+      function handleResetInput(name) {
+        const slide = document.getElementById(`slide_${name}`);
+        if (!slide) return;
+        if (slide.value === '4' && !confirmedCompletion[name]) {
+          pendingCompletion = name;
+          const overlay = document.getElementById('complete-overlay');
+          document.getElementById('complete-venue').textContent = `対象：${name}`;
+          showCompletionCheckpoints(name);
+          overlay.classList.add('is-open');
+          overlay.setAttribute('aria-hidden','false');
+          overlay.querySelector('.complete-yes').focus();
+        } else {
+          if (slide.value !== '4') confirmedCompletion[name] = false;
+          checkStatus(name);
+        }
+      }
+
+      function resolveCompletion(accepted) {
+        if (accepted && Array.from(document.querySelectorAll('#complete-checkpoints .completion-point-check')).some(box => !box.checked)) return;
+        const name = pendingCompletion;
+        pendingCompletion = null;
+        const overlay = document.getElementById('complete-overlay');
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden','true');
+        if (!name) return;
+        const slide = document.getElementById(`slide_${name}`);
+        if (!slide) return;
+        if (accepted) {
+          if (document.querySelector('#complete-checkpoints input[data-second-floor-toilet="true"]:checked')) {
+            secondFloorToiletChecked = true;
+          }
+          confirmedCompletion[name] = true;
+        } else {
+          confirmedCompletion[name] = false;
+          slide.value = '3';
+        }
+        checkStatus(name);
+        slide.focus();
+      }
+
       function checkStatus(name) {
         const slide = document.getElementById(`slide_${name}`);
         const praise = document.getElementById(`praise_${name}`);
 
         if (praise && slide) {
-          const completed = slide.value == 4;
+          const completed = slide.value == 4 && !!confirmedCompletion[name];
           praise.style.display = completed ? "inline" : "none";
 
           if (completed && !bonusTriggered[name]) {
@@ -1373,6 +1623,20 @@
         }
       }
     </script>
+
+    <div id="complete-overlay" class="complete-overlay" role="dialog" aria-modal="true" aria-labelledby="complete-heading" aria-hidden="true">
+      <div class="complete-dialog">
+        <h2 id="complete-heading">本当に完了ですか？</h2>
+        <p id="complete-venue" class="fw-bold text-center"></p>
+        <p><strong>そのままお客様にお見せできる状態＝完了です。</strong></p>
+        <p>当日対応してほしいこと、未着事項等、必ずコメント欄で報告してください。</p>
+        <div id="complete-checkpoints" class="completion-checkpoints" hidden></div>
+        <div class="complete-actions">
+          <button type="button" onclick="resolveCompletion(false)">修正する</button>
+          <button type="button" class="complete-yes" onclick="resolveCompletion(true)">確認して完了</button>
+        </div>
+      </div>
+    </div>
     <div id="iris-transition"></div>
   </body>
 </html>
